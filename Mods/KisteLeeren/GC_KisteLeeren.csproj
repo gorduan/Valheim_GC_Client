@@ -4,7 +4,7 @@
     <AssemblyName>GC_KisteLeeren</AssemblyName>
     <RootNamespace>GC.Client.ModKisteLeeren</RootNamespace>
     <Product>GC_KisteLeeren</Product>
-    <Version>1.6.0</Version>
+    <Version>1.6.1</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>kisteleeren</GcId>
     <GcStufe>2</GcStufe>

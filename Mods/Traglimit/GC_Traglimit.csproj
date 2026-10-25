@@ -4,7 +4,7 @@
     <AssemblyName>GC_Traglimit</AssemblyName>
     <RootNamespace>GC.Client.ModTraglimit</RootNamespace>
     <Product>GC_Traglimit</Product>
-    <Version>1.6.0</Version>
+    <Version>1.6.1</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>traglimit</GcId>
     <GcStufe>2</GcStufe>

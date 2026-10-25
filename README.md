@@ -2,7 +2,7 @@
 
 Client-side quality of life, one DLL per feature: equipment comparison, compass, sorting, auto doors, area harvest, carry limit, trash slot, dungeon map. Includes GC Option, an in-game settings menu for all mods.
 
-Version 1.6.0 · Author: Gorduan · License: MIT
+Version 1.6.1 · Author: Gorduan · License: MIT
 
 ## Included mods
 

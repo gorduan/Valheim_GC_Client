@@ -4,7 +4,7 @@
     <AssemblyName>GC_Portalschutz</AssemblyName>
     <RootNamespace>GC.Client.ModPortalschutz</RootNamespace>
     <Product>GC_Portalschutz</Product>
-    <Version>1.6.0</Version>
+    <Version>1.6.1</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>portalschutz</GcId>
     <GcStufe>1</GcStufe>

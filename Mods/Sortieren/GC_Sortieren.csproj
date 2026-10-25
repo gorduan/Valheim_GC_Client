@@ -4,7 +4,7 @@
     <AssemblyName>GC_Sortieren</AssemblyName>
     <RootNamespace>GC.Client.ModSortieren</RootNamespace>
     <Product>GC_Sortieren</Product>
-    <Version>1.6.0</Version>
+    <Version>1.6.1</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>sortieren</GcId>
     <GcStufe>2</GcStufe>
