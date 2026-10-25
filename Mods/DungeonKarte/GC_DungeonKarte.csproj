@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- GC_DungeonKarte (Gorduan): Dungeon-Karte. Steckbrief (Gc*) siehe ..\..\Directory.Build.targets -->
+  <PropertyGroup>
+    <AssemblyName>GC_DungeonKarte</AssemblyName>
+    <RootNamespace>GC.Client.ModDungeonKarte</RootNamespace>
+    <Product>GC_DungeonKarte</Product>
+    <Version>1.6.0</Version>
+    <GcPaket>GC_Client</GcPaket>
+    <GcId>dungeonkarte</GcId>
+    <GcStufe>3</GcStufe>
+    <GcSeite>Spieler</GcSeite>
+    <GcBraucht></GcBraucht>
+    <GcPartner></GcPartner>
+    <GcFremd></GcFremd>
+    <GcAlteConfig>gorduan.gc_client.cfg</GcAlteConfig>
+    <GcAusgleich>0</GcAusgleich>
+    <GcTitel>Dungeon-Karte</GcTitel>
+    <GcBeschreibung>Karte in Dungeons, klein in der Ecke und groß mit der Kartentaste.</GcBeschreibung>
+  </PropertyGroup>
+</Project>

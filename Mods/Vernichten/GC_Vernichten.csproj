@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- GC_Vernichten (Gorduan): Vernichten. Steckbrief (Gc*) siehe ..\..\Directory.Build.targets -->
+  <PropertyGroup>
+    <AssemblyName>GC_Vernichten</AssemblyName>
+    <RootNamespace>GC.Client.ModVernichten</RootNamespace>
+    <Product>GC_Vernichten</Product>
+    <Version>1.6.0</Version>
+    <GcPaket>GC_Client</GcPaket>
+    <GcId>vernichten</GcId>
+    <GcStufe>2</GcStufe>
+    <GcSeite>Spieler</GcSeite>
+    <GcBraucht></GcBraucht>
+    <GcPartner></GcPartner>
+    <GcFremd></GcFremd>
+    <GcAlteConfig>gorduan.gc_client.cfg</GcAlteConfig>
+    <GcAusgleich>0</GcAusgleich>
+    <GcTitel>Vernichten</GcTitel>
+    <GcBeschreibung>Vernichtet Items über ein Feld im Inventar oder per Taste, mit Rückfrage.</GcBeschreibung>
+  </PropertyGroup>
+</Project>

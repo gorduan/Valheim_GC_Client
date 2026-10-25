@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- GC_Vergleich (Gorduan): Ausrüstungs-Vergleich. Steckbrief (Gc*) siehe ..\..\Directory.Build.targets -->
+  <PropertyGroup>
+    <AssemblyName>GC_Vergleich</AssemblyName>
+    <RootNamespace>GC.Client.ModVergleich</RootNamespace>
+    <Product>GC_Vergleich</Product>
+    <Version>1.6.0</Version>
+    <GcPaket>GC_Client</GcPaket>
+    <GcId>vergleich</GcId>
+    <GcStufe>1</GcStufe>
+    <GcSeite>Spieler</GcSeite>
+    <GcBraucht></GcBraucht>
+    <GcPartner></GcPartner>
+    <GcFremd></GcFremd>
+    <GcAlteConfig>gorduan.gc_client.cfg</GcAlteConfig>
+    <GcAusgleich>0</GcAusgleich>
+    <GcTitel>Ausrüstungs-Vergleich</GcTitel>
+    <GcBeschreibung>Zeigt neben dem Tooltip, was du gerade ausgerüstet hast. Gewinn grün, Verlust rot.</GcBeschreibung>
+  </PropertyGroup>
+</Project>

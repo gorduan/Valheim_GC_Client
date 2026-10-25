@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- GC_KisteLeeren (Gorduan): Kiste leeren. Steckbrief (Gc*) siehe ..\..\Directory.Build.targets -->
+  <PropertyGroup>
+    <AssemblyName>GC_KisteLeeren</AssemblyName>
+    <RootNamespace>GC.Client.ModKisteLeeren</RootNamespace>
+    <Product>GC_KisteLeeren</Product>
+    <Version>1.6.0</Version>
+    <GcPaket>GC_Client</GcPaket>
+    <GcId>kisteleeren</GcId>
+    <GcStufe>2</GcStufe>
+    <GcSeite>Spieler</GcSeite>
+    <GcBraucht></GcBraucht>
+    <GcPartner></GcPartner>
+    <GcFremd></GcFremd>
+    <GcAlteConfig>gorduan.gc_client.cfg</GcAlteConfig>
+    <GcAusgleich>0</GcAusgleich>
+    <GcTitel>Kiste leeren</GcTitel>
+    <GcBeschreibung>Umschalt+E an einer Kiste nimmt alles heraus, ohne sie zu öffnen.</GcBeschreibung>
+  </PropertyGroup>
+</Project>

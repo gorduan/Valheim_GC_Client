@@ -1,0 +1,42 @@
+<Solution>
+  <Folder Name="/Kern/">
+    <Project Path="Kern/GC_Kern.csproj" />
+  </Folder>
+  <Folder Name="/Patcher/">
+    <Project Path="Patcher/Client/GC_ModSchalter_Client.csproj" />
+  </Folder>
+  <Folder Name="/Mods/" />
+  <Folder Name="/Mods/DungeonKarte/">
+    <Project Path="Mods/DungeonKarte/GC_DungeonKarte.csproj" />
+  </Folder>
+  <Folder Name="/Mods/Einsammeln/">
+    <Project Path="Mods/Einsammeln/GC_Einsammeln.csproj" />
+  </Folder>
+  <Folder Name="/Mods/KisteLeeren/">
+    <Project Path="Mods/KisteLeeren/GC_KisteLeeren.csproj" />
+  </Folder>
+  <Folder Name="/Mods/Kompass/">
+    <Project Path="Mods/Kompass/GC_Kompass.csproj" />
+  </Folder>
+  <Folder Name="/Mods/Portalschutz/">
+    <Project Path="Mods/Portalschutz/GC_Portalschutz.csproj" />
+  </Folder>
+  <Folder Name="/Mods/Sortieren/">
+    <Project Path="Mods/Sortieren/GC_Sortieren.csproj" />
+  </Folder>
+  <Folder Name="/Mods/Traglimit/">
+    <Project Path="Mods/Traglimit/GC_Traglimit.csproj" />
+  </Folder>
+  <Folder Name="/Mods/Tueren/">
+    <Project Path="Mods/Tueren/GC_Tueren.csproj" />
+  </Folder>
+  <Folder Name="/Mods/UmkreisErnte/">
+    <Project Path="Mods/UmkreisErnte/GC_UmkreisErnte.csproj" />
+  </Folder>
+  <Folder Name="/Mods/Vergleich/">
+    <Project Path="Mods/Vergleich/GC_Vergleich.csproj" />
+  </Folder>
+  <Folder Name="/Mods/Vernichten/">
+    <Project Path="Mods/Vernichten/GC_Vernichten.csproj" />
+  </Folder>
+</Solution>

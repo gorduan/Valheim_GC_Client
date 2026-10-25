@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- GC_Traglimit (Gorduan): Traglimit. Steckbrief (Gc*) siehe ..\..\Directory.Build.targets -->
+  <PropertyGroup>
+    <AssemblyName>GC_Traglimit</AssemblyName>
+    <RootNamespace>GC.Client.ModTraglimit</RootNamespace>
+    <Product>GC_Traglimit</Product>
+    <Version>1.6.0</Version>
+    <GcPaket>GC_Client</GcPaket>
+    <GcId>traglimit</GcId>
+    <GcStufe>2</GcStufe>
+    <GcSeite>Spieler</GcSeite>
+    <GcBraucht></GcBraucht>
+    <GcPartner></GcPartner>
+    <GcFremd></GcFremd>
+    <GcAlteConfig>gorduan.gc_client.cfg</GcAlteConfig>
+    <GcAusgleich>0</GcAusgleich>
+    <GcTitel>Traglimit</GcTitel>
+    <GcBeschreibung>Nimmt beim Aufheben und beim Strg+Klick in Kisten nur so viel, wie du noch tragen kannst.</GcBeschreibung>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- GC_UmkreisErnte (Gorduan): Umkreis-Ernte. Steckbrief (Gc*) siehe ..\..\Directory.Build.targets -->
+  <PropertyGroup>
+    <AssemblyName>GC_UmkreisErnte</AssemblyName>
+    <RootNamespace>GC.Client.ModUmkreisErnte</RootNamespace>
+    <Product>GC_UmkreisErnte</Product>
+    <Version>1.6.0</Version>
+    <GcPaket>GC_Client</GcPaket>
+    <GcId>umkreisernte</GcId>
+    <GcStufe>3</GcStufe>
+    <GcSeite>Spieler</GcSeite>
+    <GcBraucht></GcBraucht>
+    <GcPartner></GcPartner>
+    <GcFremd></GcFremd>
+    <GcAlteConfig>gorduan.gc_client.cfg</GcAlteConfig>
+    <GcAusgleich>0</GcAusgleich>
+    <GcTitel>Umkreis-Ernte</GcTitel>
+    <GcBeschreibung>Erntet alle Pflanzen und alles Aufsammelbare gleicher Sorte im Umkreis auf einmal.</GcBeschreibung>
+  </PropertyGroup>
+</Project>

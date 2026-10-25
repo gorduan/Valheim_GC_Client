@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- GC_Einsammeln (Gorduan): Einsammeln ins Fahrzeug. Steckbrief (Gc*) siehe ..\..\Directory.Build.targets -->
+  <PropertyGroup>
+    <AssemblyName>GC_Einsammeln</AssemblyName>
+    <RootNamespace>GC.Client.ModEinsammeln</RootNamespace>
+    <Product>GC_Einsammeln</Product>
+    <Version>1.6.0</Version>
+    <GcPaket>GC_Client</GcPaket>
+    <GcId>einsammeln</GcId>
+    <GcStufe>3</GcStufe>
+    <GcSeite>Spieler</GcSeite>
+    <GcBraucht></GcBraucht>
+    <GcPartner></GcPartner>
+    <GcFremd>gorduan.guilds_vehicle</GcFremd>
+    <GcAlteConfig>gorduan.gc_client.cfg</GcAlteConfig>
+    <GcAusgleich>0</GcAusgleich>
+    <GcTitel>Einsammeln ins Fahrzeug</GcTitel>
+    <GcBeschreibung>Sammelt herumliegende Items beim Ziehen des Karrens oder auf dem Schiff automatisch ein.</GcBeschreibung>
+  </PropertyGroup>
+</Project>

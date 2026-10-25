@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- GC_Tueren (Gorduan): Automatische Türen. Steckbrief (Gc*) siehe ..\..\Directory.Build.targets -->
+  <PropertyGroup>
+    <AssemblyName>GC_Tueren</AssemblyName>
+    <RootNamespace>GC.Client.ModTueren</RootNamespace>
+    <Product>GC_Tueren</Product>
+    <Version>1.6.0</Version>
+    <GcPaket>GC_Client</GcPaket>
+    <GcId>tueren</GcId>
+    <GcStufe>3</GcStufe>
+    <GcSeite>Spieler</GcSeite>
+    <GcBraucht></GcBraucht>
+    <GcPartner></GcPartner>
+    <GcFremd></GcFremd>
+    <GcAlteConfig>gorduan.gc_client.cfg</GcAlteConfig>
+    <GcAusgleich>0</GcAusgleich>
+    <GcTitel>Automatische Türen</GcTitel>
+    <GcBeschreibung>Türen öffnen sich vor dir und schließen hinter dir. Bei Gefahr und während eines Raids bleiben sie zu.</GcBeschreibung>
+  </PropertyGroup>
+</Project>

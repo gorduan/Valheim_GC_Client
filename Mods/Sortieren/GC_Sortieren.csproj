@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- GC_Sortieren (Gorduan): Sortieren. Steckbrief (Gc*) siehe ..\..\Directory.Build.targets -->
+  <PropertyGroup>
+    <AssemblyName>GC_Sortieren</AssemblyName>
+    <RootNamespace>GC.Client.ModSortieren</RootNamespace>
+    <Product>GC_Sortieren</Product>
+    <Version>1.6.0</Version>
+    <GcPaket>GC_Client</GcPaket>
+    <GcId>sortieren</GcId>
+    <GcStufe>2</GcStufe>
+    <GcSeite>Spieler</GcSeite>
+    <GcBraucht></GcBraucht>
+    <GcPartner></GcPartner>
+    <GcFremd></GcFremd>
+    <GcAlteConfig>gorduan.gc_client.cfg</GcAlteConfig>
+    <GcAusgleich>0</GcAusgleich>
+    <GcTitel>Sortieren</GcTitel>
+    <GcBeschreibung>Sortiert Inventar und offene Kisten per Knopf oder Taste. Fixierte Items und die Schnellleiste bleiben, gleiche Stapel werden zusammengeführt.</GcBeschreibung>
+  </PropertyGroup>
+</Project>
