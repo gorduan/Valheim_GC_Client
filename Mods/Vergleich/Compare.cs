@@ -12,7 +12,6 @@ using HarmonyLib;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Activation = GC.Client.CarryLimit.Activation;
 using ItemData = ItemDrop.ItemData;
 using ItemType = ItemDrop.ItemData.ItemType;
 

@@ -20,7 +20,7 @@ public partial class Plugin : BaseUnityPlugin
 		Harmony harmony = new(GcMod.Guid);
 		CartCollect.Plugin.Init(Config, harmony);
 		Module.TakeOverOldSettings();
-		harmony.PatchAll(typeof(Plugin).Assembly);
+		GcMod.PatchAll(harmony); // nur die Patches dieser Mod (alle Mods des Pakets in einer DLL)
 		Module.MenuGroup(key => GcLoc.Get("gccm_" + key))
 			.Main("cartcollect", CartCollect.Plugin.Enabled, () => CartCollect.Plugin.Blocked, "GC_CartCollect")
 			.Sub("cartcollect_range", CartCollect.Plugin.Range, 1, " m")

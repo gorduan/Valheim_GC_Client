@@ -20,7 +20,7 @@ public partial class Plugin : BaseUnityPlugin
 		Harmony harmony = new(GcMod.Guid);
 		AutoDoor.Plugin.Init(Config, harmony);
 		Module.TakeOverOldSettings();
-		harmony.PatchAll(typeof(Plugin).Assembly);
+		GcMod.PatchAll(harmony); // nur die Patches dieser Mod (alle Mods des Pakets in einer DLL)
 		Module.MenuGroup(key => GcLoc.Get("gccm_" + key))
 			.Main("autodoor", AutoDoor.Plugin.Enabled, () => AutoDoor.Plugin.Blocked, "GC_AutoDoor")
 			.Sub("autodoor_open", AutoDoor.Plugin.OpenDistance, 0.5, " m")

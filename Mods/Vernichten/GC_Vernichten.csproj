@@ -4,7 +4,7 @@
     <AssemblyName>GC_Vernichten</AssemblyName>
     <RootNamespace>GC.Client.ModVernichten</RootNamespace>
     <Product>GC_Vernichten</Product>
-    <Version>1.6.1</Version>
+    <Version>1.7.0</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>vernichten</GcId>
     <GcStufe>2</GcStufe>

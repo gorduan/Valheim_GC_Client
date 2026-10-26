@@ -4,7 +4,7 @@
     <AssemblyName>GC_Vergleich</AssemblyName>
     <RootNamespace>GC.Client.ModVergleich</RootNamespace>
     <Product>GC_Vergleich</Product>
-    <Version>1.6.1</Version>
+    <Version>1.7.0</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>vergleich</GcId>
     <GcStufe>1</GcStufe>

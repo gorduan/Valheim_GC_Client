@@ -21,7 +21,7 @@ public partial class Plugin : BaseUnityPlugin
 		DungeonMap.Plugin.Init(Config, harmony);
 		Module.TakeOverOldSettings();
 		GcHooks.DungeonMapLargeOpen = () => DungeonMap.Plugin.View != null && DungeonMap.Plugin.View.LargeOpen;
-		harmony.PatchAll(typeof(Plugin).Assembly);
+		GcMod.PatchAll(harmony); // nur die Patches dieser Mod (alle Mods des Pakets in einer DLL)
 		Module.MenuGroup(key => GcLoc.Get("gccm_" + key))
 			.Main("dungeonmap", DungeonMap.Plugin.Enabled, () => DungeonMap.Plugin.Blocked, "GC_DungeonMap")
 			.Sub("dungeonmap_size", DungeonMap.Plugin.SmallSize, 20, " px")

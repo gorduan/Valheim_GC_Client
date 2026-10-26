@@ -20,7 +20,7 @@ public partial class Plugin : BaseUnityPlugin
 		Harmony harmony = new(GcMod.Guid);
 		CarryLimit.Plugin.Init(Config, harmony);
 		Module.TakeOverOldSettings();
-		harmony.PatchAll(typeof(Plugin).Assembly);
+		GcMod.PatchAll(harmony); // nur die Patches dieser Mod (alle Mods des Pakets in einer DLL)
 		Module.MenuGroup(key => GcLoc.Get("gccm_" + key))
 			.Main("carrylimit", CarryLimit.Plugin.Enabled, () => CarryLimit.Plugin.Blocked, "GC_CarryLimit")
 			.Sub("carrylimit_mode", CarryLimit.Plugin.Mode)

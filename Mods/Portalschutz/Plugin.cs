@@ -22,7 +22,7 @@ public partial class Plugin : BaseUnityPlugin
 		Module.TakeOverOldSettings();
 		GcHooks.PortalGuardActive = () => PortalGuard.Plugin.On;
 		GcHooks.PortalRename = PortalGuard.Plugin.Rename;
-		harmony.PatchAll(typeof(Plugin).Assembly);
+		GcMod.PatchAll(harmony); // nur die Patches dieser Mod (alle Mods des Pakets in einer DLL)
 		Module.MenuGroup(key => GcLoc.Get("gccm_" + key))
 			.Main("portalguard", PortalGuard.Plugin.Enabled, () => PortalGuard.Plugin.Blocked, "GC_PortalGuard")
 			.Sub("portalguard_confirm", PortalGuard.Plugin.Confirm)

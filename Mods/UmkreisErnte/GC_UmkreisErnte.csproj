@@ -4,7 +4,7 @@
     <AssemblyName>GC_UmkreisErnte</AssemblyName>
     <RootNamespace>GC.Client.ModUmkreisErnte</RootNamespace>
     <Product>GC_UmkreisErnte</Product>
-    <Version>1.6.1</Version>
+    <Version>1.7.0</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>umkreisernte</GcId>
     <GcStufe>3</GcStufe>

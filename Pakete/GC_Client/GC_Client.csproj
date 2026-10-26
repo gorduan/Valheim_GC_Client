@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Paket GC_Client (Gorduan, 26.10.2026: eine Mod-DLL je Paket, wegen Thunderstore): hat keine eigenen Quellen, sondern führt die
+    DLLs seiner Mods zu GC_Client.dll zusammen (..\ILRepack.targets). GC_Kern und der Vorlader bleiben eigene DLLs im Paket.
+    Die Mitglieder sind die Mods mit GcPaket = GC_Client; build.ps1 prüft, dass beide Listen übereinstimmen.
+  -->
+  <PropertyGroup>
+    <AssemblyName>GC_Client</AssemblyName>
+    <RootNamespace>GC.Pakete</RootNamespace>
+    <Version>1.7.0</Version>
+    <GcPaketZiel>GC_Client</GcPaketZiel>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <ILRepackTargetsFile>$(MSBuildThisFileDirectory)..\ILRepack.targets</ILRepackTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.44.1" PrivateAssets="all" />
+    <ProjectReference Include="..\..\Mods\DungeonKarte\GC_DungeonKarte.csproj" Private="false" />
+    <ProjectReference Include="..\..\Mods\Einsammeln\GC_Einsammeln.csproj" Private="false" />
+    <ProjectReference Include="..\..\Mods\KisteLeeren\GC_KisteLeeren.csproj" Private="false" />
+    <ProjectReference Include="..\..\Mods\Kompass\GC_Kompass.csproj" Private="false" />
+    <ProjectReference Include="..\..\Mods\Portalschutz\GC_Portalschutz.csproj" Private="false" />
+    <ProjectReference Include="..\..\Mods\Sortieren\GC_Sortieren.csproj" Private="false" />
+    <ProjectReference Include="..\..\Mods\Traglimit\GC_Traglimit.csproj" Private="false" />
+    <ProjectReference Include="..\..\Mods\Tueren\GC_Tueren.csproj" Private="false" />
+    <ProjectReference Include="..\..\Mods\UmkreisErnte\GC_UmkreisErnte.csproj" Private="false" />
+    <ProjectReference Include="..\..\Mods\Vergleich\GC_Vergleich.csproj" Private="false" />
+    <ProjectReference Include="..\..\Mods\Vernichten\GC_Vernichten.csproj" Private="false" />
+  </ItemGroup>
+</Project>

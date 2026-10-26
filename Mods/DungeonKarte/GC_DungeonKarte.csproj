@@ -4,7 +4,7 @@
     <AssemblyName>GC_DungeonKarte</AssemblyName>
     <RootNamespace>GC.Client.ModDungeonKarte</RootNamespace>
     <Product>GC_DungeonKarte</Product>
-    <Version>1.6.1</Version>
+    <Version>1.7.0</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>dungeonkarte</GcId>
     <GcStufe>3</GcStufe>

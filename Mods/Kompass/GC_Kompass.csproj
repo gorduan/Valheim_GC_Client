@@ -4,7 +4,7 @@
     <AssemblyName>GC_Kompass</AssemblyName>
     <RootNamespace>GC.Client.ModKompass</RootNamespace>
     <Product>GC_Kompass</Product>
-    <Version>1.6.1</Version>
+    <Version>1.7.0</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>kompass</GcId>
     <GcStufe>1</GcStufe>

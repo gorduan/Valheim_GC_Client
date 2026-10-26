@@ -4,7 +4,7 @@
     <AssemblyName>GC_Einsammeln</AssemblyName>
     <RootNamespace>GC.Client.ModEinsammeln</RootNamespace>
     <Product>GC_Einsammeln</Product>
-    <Version>1.6.1</Version>
+    <Version>1.7.0</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>einsammeln</GcId>
     <GcStufe>3</GcStufe>

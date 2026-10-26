@@ -4,7 +4,7 @@
     <AssemblyName>GC_Tueren</AssemblyName>
     <RootNamespace>GC.Client.ModTueren</RootNamespace>
     <Product>GC_Tueren</Product>
-    <Version>1.6.1</Version>
+    <Version>1.7.0</Version>
     <GcPaket>GC_Client</GcPaket>
     <GcId>tueren</GcId>
     <GcStufe>3</GcStufe>

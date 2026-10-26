@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Pakete/">
+    <Project Path="Pakete/GC_Client/GC_Client.csproj" />
+  </Folder>
   <Folder Name="/Kern/">
     <Project Path="Kern/GC_Kern.csproj" />
   </Folder>
