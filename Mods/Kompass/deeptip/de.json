@@ -1,0 +1,35 @@
+{
+  "$locale": "de",
+  "gc.kompass": {
+    "title": "Kompass (Mod)",
+    "short": "Kompass-Leiste oben am Bildschirm mit Kartenmarkierungen, Mitspielern und einem goldenen Ziel.",
+    "body": "Die Mod bringt den [[gc.kompass.compass]] oben am Bildschirm, mit deinem [[gc.kompass.target|Kompass-Ziel]] und den [[gc.kompass.pings|Pings]] anderer Spieler. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 1 „Sehr Vanilla“), ändert nur die Anzeige, läuft nur bei dir und gilt deshalb auf jedem Server.\n\nGröße, Sichtbereich, Reichweite und was er zeigt, stellst du im [[gc.option|Menü GC Option]] ein; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]].",
+    "see": ["gc.kompass.compass_focus_key", "gc.kompass.compass_offset"]
+  },
+  "gc.kompass.compass": {
+    "title": "Kompass",
+    "short": "Leiste oben am Bildschirm mit Himmelsrichtungen, Kartenmarkierungen, Mitspielern und deinem Ziel.",
+    "body": "Die Leiste zeigt in Blickrichtung die Himmelsrichtungen und die Markierungen deiner Karte, auch Händler und andere Orte mit Kartensymbol sowie Mitspieler, die auf der Karte sichtbar sind. Dein [[gc.kompass.target|Ziel]] und [[gc.kompass.pings|Pings]] stehen immer hervorgehoben darin; andere Markierungen werden mit der Entfernung kleiner und blasser und fehlen jenseits von {gc_kompass_compass_range}.\n\nWas im Kartenfilter aus ist, fehlt auch hier, abgehakte Markierungen zeigt er nur auf Wunsch. In Welten ohne Karte bleiben nur die Himmelsrichtungen. Der Kompass verschwindet mit dem HUD und solange die große Karte oder die große [[gc.dungeonkarte.dungeonmap|Dungeon-Karte]] offen ist."
+  },
+  "gc.kompass.target": {
+    "title": "Kompass-Ziel",
+    "short": "Eine Kartenmarkierung, die golden auf der Karte und immer hervorgehoben im Kompass steht.",
+    "body": "Halte die [[gc.kompass.compass_focus_key|Ziel-Taste]] (zurzeit {gc_kompass_compass_focus_key}) und klicke auf der großen Karte eine Markierung an: Sie wird zum Ziel, golden auf der Karte und im [[gc.kompass.compass|Kompass]] immer hervorgehoben, auch jenseits der Reichweite. Liegt das Ziel hinter dir, steht es am Rand mit « oder ».\n\nEin weiterer Klick mit der Taste auf das Ziel oder auf eine leere Stelle hebt es auf; ohne die Taste hakt ein Klick die Markierung wie gewohnt ab. Das Ziel bleibt am Charakter gespeichert, getrennt nach Welt. Ein Mitspieler als Ziel wird über seinen Namen gefunden und wartet, solange er offline ist.",
+    "aliases": ["Kompass-Ziel"]
+  },
+  "gc.kompass.pings": {
+    "title": "Pings",
+    "short": "Markierungen, die Spieler mit der mittleren Maustaste auf der Karte setzen; im Kompass blau.",
+    "body": "Klickt jemand mit der mittleren Maustaste auf die Karte, zeigt Valheim dort etwa 5 Sekunden lang einen Ping. So lange hebt ihn der [[gc.kompass.compass|Kompass]] blau hervor, mit Namen und auf Wunsch mit Entfernung. Wie das [[gc.kompass.target|Ziel]] erscheint er unabhängig von der Reichweite."
+  },
+  "gc.kompass.compass_focus_key": {
+    "title": "Taste: Ziel wählen",
+    "short": "Diese Taste halten und eine Markierung auf der großen Karte anklicken: Sie wird zum Kompass-Ziel.",
+    "body": "Zurzeit {gc_kompass_compass_focus_key}. Mit gehaltener Taste macht ein Klick auf eine Markierung der großen Karte sie zum [[gc.kompass.target|Ziel]], ein Klick auf das Ziel oder eine leere Stelle hebt es auf. Ohne Taste lässt sich kein Ziel wählen."
+  },
+  "gc.kompass.compass_offset": {
+    "title": "Abstand vom oberen Rand",
+    "short": "Wie weit die Kompass-Leiste vom oberen Bildschirmrand entfernt steht.",
+    "body": "Zurzeit {gc_kompass_compass_offset}. Boss- und Raid-Leiste oben in der Mitte schieben den [[gc.kompass.compass|Kompass]] von selbst nach unten, statt ihn zu verdecken; den Abstand brauchst du nur, wenn die Leiste etwas anderes verdeckt."
+  }
+}

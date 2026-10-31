@@ -1,0 +1,19 @@
+{
+  "$locale": "de",
+  "gc.sortieren": {
+    "title": "Sortieren (Mod)",
+    "short": "Sortiert Inventar und offene Kisten per Knopf oder Taste.",
+    "body": "Die Mod bringt Knöpfe zum [[gc.sortieren.sort|Sortieren]] an Inventar und Kisten; fixierte Items und die Schnellleiste bleiben dabei stehen. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 2 „Vanilla“) und läuft nur bei dir; erlaubt ein Server nur eine niedrigere Stufe, ist sie dort aus.\n\nReihenfolge, Schnellleiste, Stapel und Tasten stellst du im [[gc.option|Menü GC Option]] ein; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]].",
+    "see": ["gc.sortieren.sort_mode"]
+  },
+  "gc.sortieren.sort": {
+    "title": "Sortieren",
+    "short": "Knöpfe „Sortieren“ an Inventar und Kisten; Schnellleiste und fixierte Items bleiben stehen.",
+    "body": "Am Inventar und an jeder offenen Kiste steht ein Knopf „Sortieren“, auf Wunsch gibt es dafür auch je eine Taste. Die [[gc.sortieren.sort_mode|Reihenfolge]] ist einstellbar; angebrochene Stapel gleicher Items werden dabei auf Wunsch zu vollen Stapeln zusammengeführt.\n\nFixierte Items bleiben auf ihrem Platz, im Inventar auf Wunsch auch die Schnellleiste (oberste Reihe). Items mit Zusatzdaten wie EpicLoot-Magie werden nie zusammengelegt. Geht das Ergebnis nicht genau auf, bleibt alles, wie es war."
+  },
+  "gc.sortieren.sort_mode": {
+    "title": "Sortieren nach",
+    "short": "Reihenfolge beim Sortieren: Kategorie, Name, Gewicht oder Wert.",
+    "body": "- **Kategorie** (Standard): Waffen, Schilde, Werkzeuge und Fackeln, dann Rüstung, Schmuck, Munition, Verbrauchbares, Fisch, Material, Trophäen und Sonstiges; innerhalb einer Kategorie nach Name und Qualität.\n- **Name:** alphabetisch in deiner Sprache, höhere Qualität zuerst.\n- **Gewicht:** schwerste Stapel zuerst (Gewicht mal Anzahl).\n- **Wert:** wertvollste Stapel zuerst (Wert mal Anzahl).\n\nGleich schwere oder gleich wertvolle Stapel stehen nach Name."
+  }
+}

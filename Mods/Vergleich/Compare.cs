@@ -27,7 +27,8 @@ namespace GC.Client.Compare;
 /// Einhandwaffe und Schild zusammen, eine Fackel neben einer Einhandwaffe ersetzt nichts. Weggesteckte Waffen (Taste R) gelten als
 /// ausgerüstet. Die Werte kommen aus den Spiel-Methoden (GetArmor, GetDamage, GetBaseBlockPower …); EpicLoot rechnet Schaden und
 /// Blocken dort nur für das angelegte Item mit Magie, für das gezeigte Item holt EpicLootLink dieselbe Rechnung „als wäre es angelegt“.
-/// Valheims eigener Tooltip bleibt unverändert. EpicLoots eigener Vergleich (Links-Strg) wird ausgeblendet, solange unser Feld steht.
+/// Valheims eigener Tooltip bleibt unverändert. EpicLoots eigener Vergleich (Links-Strg) wird abgeschaltet, solange unser Vergleich
+/// gilt (ab EpicLoot 0.15.2; bis 0.15.1 nur ausgeblendet, siehe EpicLootLink).
 /// Eigene Mod nach Gorduans Wunsch; HoverCompare (MIT) diente nur zum Lesen.
 /// </summary>
 internal static class Plugin
@@ -101,14 +102,37 @@ internal static class Hover
 [HarmonyPatch(typeof(InventoryGrid), nameof(InventoryGrid.CreateItemTooltip))]
 internal static class GridTooltipPatch
 {
-	// Läuft auch, wenn EpicLoot das Original per Prefix ersetzt (Harmony ruft Postfixe trotzdem)
+	/// <summary>
+	/// Läuft auch, wenn EpicLoot das Original per Prefix ersetzt (Harmony ruft Postfixe trotzdem). Vor EpicLoots Postfix
+	/// AddComparisonTooltip (Review 27.10.2026, EpicLoot 0.15.2): EpicLoots Prefix hat bei Links-Strg eben den Text seines Vergleichs
+	/// gesetzt, der Postfix baut daraus den Kasten „ComparisonCanvas“. Gilt unser Vergleich, leeren wir den Text dazwischen.
+	/// </summary>
+	[HarmonyPriority(Priority.First)]
+	[HarmonyBefore("randyknapp.mods.epicloot")]
 	private static void Postfix(ItemData item, UITooltip tooltip)
 	{
 		if (item != null && tooltip != null)
 		{
 			Hover.Grid(tooltip, item);
+			try
+			{
+				if (EpicLootLink.CanSuppress && Comparison.Shown(item))
+				{
+					EpicLootLink.SuppressComparison();
+				}
+			}
+			catch (Exception e)
+			{
+				if (!reported)
+				{
+					reported = true; // läuft jedes Bild: nur einmal ins Log, Valheims Inventar läuft weiter
+					Plugin.Log.LogWarning($"Ausrüstungs-Vergleich: {e}");
+				}
+			}
 		}
 	}
+
+	private static bool reported;
 }
 
 [HarmonyPatch(typeof(StoreGui), nameof(StoreGui.FillList))]
@@ -172,7 +196,8 @@ internal static class ShopItemsPatch
 internal static class TooltipLatePatch
 {
 	// Läuft für jedes Element mit Tooltip; nur der gerade gezeigte zählt. Nach Valheims Code: der Tooltip steht schon am Mauszeiger.
-	// Nach EpicLoot: Seit 0.15.0 setzt und bemisst EpicLoot seinen Kasten im selben LateUpdate (PlaceTooltip, Priorität Last).
+	// Nach EpicLoot: Seit 0.15.0 setzt und bemisst EpicLoot seinen Kasten im selben LateUpdate (PlaceTooltip, Priorität Last; in
+	// 0.15.2 in TooltipBoxPatches, vorher PatchOnHoverFix).
 	[HarmonyAfter("randyknapp.mods.epicloot")]
 	private static void Postfix(UITooltip __instance)
 	{
@@ -637,22 +662,39 @@ internal static class Comparison
 
 	private static int Mix(int h, ItemData? item) => unchecked(h * 31 + (item == null ? 0 : RuntimeHelpers.GetHashCode(item) ^ (item.m_quality << 24) ^ (int)item.m_durability));
 
+	/// <summary>
+	/// Belegung nach dem Anlegen, was dabei ersetzt würde in displaced; null, wenn es keinen Vergleich gibt. Gemeinsame Regel für
+	/// Build und Shown (Review 27.10.2026: Shown entscheidet schon in CreateItemTooltip, ob EpicLoots Vergleich abgeschaltet wird).
+	/// </summary>
+	private static Loadout? After(Loadout before, ItemData item, List<ItemData> displaced)
+	{
+		if (item.m_equipped || before.Holds(item))
+		{
+			return null; // schon angelegt (auch in Zusatzplätzen anderer Mods) oder weggesteckt
+		}
+		Loadout? after = before.With(item, displaced);
+		return after != null && displaced.Count > 0 ? after : null; // ersetzt nichts: kein Vergleich (wie in Rollenspielen bei leerem Platz)
+	}
+
+	/// <summary>Erscheint unser Feld für dieses Item? Dieselben Bedingungen wie Panel.Show und Build, ohne den Text zu bauen.</summary>
+	internal static bool Shown(ItemData item)
+	{
+		Player? player = Player.m_localPlayer;
+		return player != null && Plugin.Wanted && Possible(item) && After(Loadout.Of(player), item, new List<ItemData>()) != null;
+	}
+
 	internal static bool Build(Player player, ItemData item, out string title, out string text)
 	{
 		title = "";
 		text = "";
 		Loadout before = Loadout.Of(player);
-		if (item.m_equipped || before.Holds(item))
+		List<ItemData> displaced = new();
+		Loadout? after = After(before, item, displaced);
+		if (after == null)
 		{
-			return false; // schon angelegt (auch in Zusatzplätzen anderer Mods) oder weggesteckt
+			return false;
 		}
 		viewer = player;
-		List<ItemData> displaced = new();
-		Loadout? after = before.With(item, displaced);
-		if (after == null || displaced.Count == 0)
-		{
-			return false; // ersetzt nichts: kein Vergleich (wie in Rollenspielen bei leerem Platz)
-		}
 
 		StringBuilder changes = new();
 		Changes(changes, player, item, before, after, displaced);
@@ -1091,13 +1133,19 @@ internal static class Comparison
 	}
 }
 
-/// <summary>Weiche Anbindung an EpicLoot (nur per Reflexion, die Mod läuft auch ohne EpicLoot).</summary>
+/// <summary>
+/// Weiche Anbindung an EpicLoot (nur per Reflexion, die Mod läuft auch ohne EpicLoot). Stand EpicLoot 0.15.2 (Review 27.10.2026,
+/// Gorduan: „alle Mods sollen sich an die neueste EpicLoot-Version halten“); mit 0.15.0/0.15.1 gilt für EpicLoots Vergleich der alte Weg.
+/// </summary>
 internal static class EpicLootLink
 {
 	private const string Guid = "randyknapp.mods.epicloot";
+	private const string ComparisonBoxName = "ComparisonCanvas"; // EpicLoots Vergleichskasten, Kind von UITooltip.m_tooltip (0.15.0 bis 0.15.2)
 	private static Assembly? assembly;
 	private static bool searched;
+	private static MethodInfo? apiName;
 	private static MethodInfo? decorate;
+	private static MethodInfo? clearComparison;
 	private static FieldInfo? comparison;
 	private static MethodInfo? magicDamage;
 	private static MethodInfo? coinBonus;
@@ -1105,32 +1153,71 @@ internal static class EpicLootLink
 	private static MethodInfo? blockPower;
 	private static MethodInfo? blockForce;
 	private static GameObject? hiddenComparison;
-	private static bool membersSearched;
 
+	/// <summary>Einmal beim ersten Zugriff: EpicLoots Mitglieder suchen und mit der Version ins Log schreiben (Review 27.10.2026).</summary>
 	private static void Search()
 	{
-		if (!searched)
+		if (searched)
 		{
-			searched = true;
-			if (Chainloader.PluginInfos.TryGetValue(Guid, out PluginInfo info) && info.Instance != null)
-			{
-				assembly = info.Instance.GetType().Assembly;
-			}
+			return;
 		}
-		if (!membersSearched && assembly != null)
+		searched = true;
+		if (!Chainloader.PluginInfos.TryGetValue(Guid, out PluginInfo info) || info.Instance == null)
 		{
-			membersSearched = true;
-			decorate = assembly.GetType("EpicLoot.ItemDataExtensions")?.GetMethod("GetDecoratedName", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(ItemData), typeof(string) }, null);
-			comparison = assembly.GetType("EpicLoot.PatchOnHoverFix")?.GetField("ComparisonTT", BindingFlags.Public | BindingFlags.Static);
-			Type? damage = assembly.GetType("EpicLoot.MagicItemEffects.ModifyDamage");
-			magicDamage = damage?.GetMethod("ApplyMagicDamageModifiers", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
-			// seit EpicLoot 0.15.0 mit 4. Parameter: Bonus der Münz-Waffe (CoinHoarder), wie beim angelegten Item
-			coinBonus = assembly.GetType("EpicLoot.MagicItemEffects.CoinHoarder")?.GetMethod("GetDamageBonus", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Player) }, null);
-			shardDamage = damage?.GetMethod("ApplyShardWeaponModifiers", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
-			Type? block = assembly.GetType("EpicLoot.MagicItemEffects.ModifyBlock");
-			blockPower = block?.GetMethod("GetBlockPowerValue", BindingFlags.Public | BindingFlags.Static);
-			blockForce = block?.GetMethod("GetDeflectionForceValue", BindingFlags.Public | BindingFlags.Static);
+			return;
 		}
+		try
+		{
+			Find(info);
+		}
+		catch (Exception e)
+		{
+			// Search läuft auch im Postfix von CreateItemTooltip: ein Fehler hier darf Valheims Inventar nicht stören
+			Plugin.Log.LogWarning($"Ausrüstungs-Vergleich: EpicLoot {info.Metadata.Version} passt nicht ganz, Vergleich ohne die fehlenden Teile ({e.GetBaseException().Message}).");
+		}
+	}
+
+	private static void Find(PluginInfo info)
+	{
+		assembly = info.Instance.GetType().Assembly;
+		const BindingFlags AnyStatic = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+		Type[] nameArgs = { typeof(ItemData), typeof(string) };
+		// Name mit Seltenheitsfarbe: öffentliche API (0.15.0 bis 0.15.2), die Erweiterungsmethode nur als Ersatz
+		apiName = assembly.GetType("EpicLoot.API")?.GetMethod("GetItemDecoratedName", BindingFlags.Public | BindingFlags.Static, null, nameArgs, null);
+		if (apiName == null)
+		{
+			decorate = assembly.GetType("EpicLoot.ItemDataExtensions")?.GetMethod("GetDecoratedName", BindingFlags.Public | BindingFlags.Static, null, nameArgs, null);
+		}
+		// EpicLoots Vergleich (Links-Strg): ab 0.15.2 TooltipBoxPatches (intern, Kasten privat), bis 0.15.1 PatchOnHoverFix.ComparisonTT
+		clearComparison = assembly.GetType("EpicLoot.TooltipBoxPatches")?.GetMethod("ClearComparison", AnyStatic, null, Type.EmptyTypes, null);
+		comparison = assembly.GetType("EpicLoot.PatchOnHoverFix")?.GetField("ComparisonTT", BindingFlags.Public | BindingFlags.Static);
+		Type? damage = assembly.GetType("EpicLoot.MagicItemEffects.ModifyDamage");
+		magicDamage = damage?.GetMethod("ApplyMagicDamageModifiers", AnyStatic);
+		// seit EpicLoot 0.15.0 (auch 0.15.2) mit 4. Parameter: Bonus der Münz-Waffe (CoinHoarder), wie beim angelegten Item
+		coinBonus = assembly.GetType("EpicLoot.MagicItemEffects.CoinHoarder")?.GetMethod("GetDamageBonus", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Player) }, null);
+		shardDamage = damage?.GetMethod("ApplyShardWeaponModifiers", AnyStatic);
+		Type? block = assembly.GetType("EpicLoot.MagicItemEffects.ModifyBlock");
+		blockPower = block?.GetMethod("GetBlockPowerValue", BindingFlags.Public | BindingFlags.Static);
+		blockForce = block?.GetMethod("GetDeflectionForceValue", BindingFlags.Public | BindingFlags.Static);
+
+		List<string> found = new();
+		List<string> missing = new();
+		void Note(object? member, string name) => (member != null ? found : missing).Add(name);
+		Note(apiName, "API.GetItemDecoratedName");
+		if (apiName == null)
+		{
+			Note(decorate, "ItemDataExtensions.GetDecoratedName (Ersatz)");
+		}
+		Note(magicDamage, magicDamage != null ? $"ModifyDamage.ApplyMagicDamageModifiers ({magicDamage.GetParameters().Length} Parameter)" : "ModifyDamage.ApplyMagicDamageModifiers");
+		Note(coinBonus, "CoinHoarder.GetDamageBonus");
+		Note(shardDamage, "ModifyDamage.ApplyShardWeaponModifiers");
+		Note(blockPower, "ModifyBlock.GetBlockPowerValue");
+		Note(blockForce, "ModifyBlock.GetDeflectionForceValue");
+		string own = clearComparison != null ? "abschalten über TooltipBoxPatches.ClearComparison"
+			: comparison != null ? "ausblenden über PatchOnHoverFix.ComparisonTT"
+			: $"ausblenden über das Kind „{ComparisonBoxName}“ (Ersatz)";
+		Plugin.Log.LogInfo($"Ausrüstungs-Vergleich: EpicLoot {info.Metadata.Version}. Gefunden: {string.Join(", ", found)}. "
+			+ $"Fehlt: {(missing.Count == 0 ? "nichts" : string.Join(", ", missing))}. EpicLoots eigenen Vergleich {own}.");
 	}
 
 	/// <summary>
@@ -1185,32 +1272,80 @@ internal static class EpicLootLink
 		}
 	}
 
-	/// <summary>Name wie in EpicLoots Tooltip (Seltenheitsfarbe, magischer Name), sonst Valheims Name.</summary>
+	/// <summary>Name wie in EpicLoots Tooltip (Seltenheitsfarbe, magischer Name) über EpicLoot.API.GetItemDecoratedName, sonst Valheims Name.</summary>
 	internal static string Name(ItemData item)
 	{
 		Search();
-		if (decorate != null)
+		MethodInfo? method = apiName ?? decorate;
+		if (method != null)
 		{
 			try
 			{
-				if (decorate.Invoke(null, new object?[] { item, null }) is string name && name.Length > 0)
+				if (method.Invoke(null, new object?[] { item, null }) is string name && name.Length > 0)
 				{
 					return name;
 				}
 			}
 			catch (Exception)
 			{
-				decorate = null; // andere EpicLoot-Fassung: ab jetzt Valheims Name
+				apiName = decorate = null; // andere EpicLoot-Fassung: ab jetzt Valheims Name
 			}
 		}
 		return item.m_shared.m_name;
 	}
 
-	/// <summary>EpicLoots eigenes Feld „Aktuell ausgerüstet“ (bei gehaltenem Links-Strg) zeigt dasselbe ohne Unterschiede: solange unseres steht, aus.</summary>
+	/// <summary>Lässt sich EpicLoots Vergleich abschalten (ab 0.15.2)? Sonst bleibt nur HideComparison.</summary>
+	internal static bool CanSuppress
+	{
+		get
+		{
+			Search();
+			return clearComparison != null;
+		}
+	}
+
+	/// <summary>
+	/// EpicLoots Feld „Aktuell ausgerüstet“ (bei gehaltenem Links-Strg) zeigt dasselbe wie unseres ohne Unterschiede. Ab 0.15.2 gibt
+	/// es kein öffentliches Feld mehr (PatchOnHoverFix.ComparisonTT ist weg), das Ausblenden tat still nichts und EpicLoots Kasten
+	/// verdeckte unseren (Review 27.10.2026). Deshalb abschalten statt ausblenden: TooltipBoxPatches.ClearComparison leert den Text,
+	/// den EpicLoots Prefix in CreateItemTooltip eben gesetzt hat; EpicLoots Postfix AddComparisonTooltip (nach GridTooltipPatch)
+	/// entfernt dann den Kasten, und PlaceTooltip legt den Haupt-Tooltip ohne Platz für ihn aus. Gilt nur für dieses Bild.
+	/// </summary>
+	internal static void SuppressComparison()
+	{
+		if (clearComparison == null)
+		{
+			return;
+		}
+		try
+		{
+			clearComparison.Invoke(null, null);
+		}
+		catch (Exception e)
+		{
+			clearComparison = null; // andere EpicLoot-Fassung: ab jetzt nur noch ausblenden (HideComparison)
+			Plugin.Log.LogWarning($"Ausrüstungs-Vergleich: EpicLoots Vergleich ließ sich nicht abschalten, er wird nur noch ausgeblendet ({e.GetBaseException().Message}).");
+		}
+	}
+
+	/// <summary>
+	/// Ausblenden, solange unser Feld steht: bis 0.15.1 der alte Weg über PatchOnHoverFix.ComparisonTT, sonst als Ersatz das Kind
+	/// „ComparisonCanvas“ des Tooltips (falls SuppressComparison nicht greifen konnte). Ab 0.15.2 ist es normalerweise schon weg.
+	/// </summary>
 	internal static void HideComparison()
 	{
 		Search();
-		if (comparison?.GetValue(null) is GameObject other && other != null && other.activeSelf)
+		if (assembly == null)
+		{
+			return;
+		}
+		GameObject? other = comparison?.GetValue(null) as GameObject;
+		if (other == null && UITooltip.m_tooltip != null)
+		{
+			Transform box = UITooltip.m_tooltip.transform.Find(ComparisonBoxName);
+			other = box != null ? box.gameObject : null;
+		}
+		if (other != null && other.activeSelf)
 		{
 			other.SetActive(false);
 			hiddenComparison = other;

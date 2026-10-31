@@ -85,6 +85,29 @@ internal static class MapModePatch
 	}
 }
 
+/// <summary>
+/// Esc schließt die große Dungeon-Karte. Menu.Update öffnet bei Esc das Pause-Menü, wenn kein Fenster offen ist, das es kennt (Menu.cs,
+/// InventoryGui, Minimap …); unsere Karte kennt es nicht (Review 27.10.2026: beides geschah im selben Bild). In dem Bild, in dem Esc die
+/// Karte schließt, läuft Menu.Update deshalb nicht. Läuft Menu.Update vor unserem Update, schließt dieser Prefix die Karte selbst.
+/// </summary>
+[HarmonyPatch(typeof(Menu), nameof(Menu.Update))]
+internal static class MenuEscPatch
+{
+	private static bool Prefix(Menu __instance)
+	{
+		MapView? view = Plugin.View;
+		if (view == null || __instance.m_root == null || __instance.m_root.gameObject.activeSelf || !ZInput.GetKeyDown(KeyCode.Escape))
+		{
+			return true;
+		}
+		if (view.LargeOpen)
+		{
+			view.CloseLarge();
+		}
+		return view.EscFrame != Time.frameCount;
+	}
+}
+
 internal sealed class DungeonData
 {
 	public string Key = "";
@@ -118,6 +141,19 @@ internal sealed class MapView
 
 	/// <summary>Große Dungeon-Karte offen (der Kompass blendet sich dann aus).</summary>
 	public bool LargeOpen => large != null && large.activeSelf;
+
+	/// <summary>Bild, in dem Esc die große Karte geschlossen hat (MenuEscPatch: dann kein Pause-Menü).</summary>
+	public int EscFrame { get; private set; } = -10;
+
+	/// <summary>Große Karte mit Esc schließen.</summary>
+	public void CloseLarge()
+	{
+		if (large != null)
+		{
+			large.SetActive(false);
+		}
+		EscFrame = Time.frameCount;
+	}
 
 	public void Hide()
 	{
@@ -156,7 +192,7 @@ internal sealed class MapView
 		Build();
 		if (large!.activeSelf && Input.GetKeyDown(KeyCode.Escape))
 		{
-			large.SetActive(false);
+			CloseLarge();
 		}
 		if (Plugin.HideVanillaMinimap.Value && Minimap.instance != null && Minimap.instance.m_smallRoot != null && Minimap.instance.m_smallRoot.activeSelf)
 		{

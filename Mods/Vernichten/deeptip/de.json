@@ -1,0 +1,13 @@
+{
+  "$locale": "de",
+  "gc.vernichten": {
+    "title": "Vernichten (Mod)",
+    "short": "Vernichtet Items über einen Knopf am Inventar oder per Taste, mit Rückfrage.",
+    "body": "Die Mod bringt einen Knopf zum [[gc.vernichten.trash|Vernichten]] am Inventar und eine Taste dafür; angelegte und fixierte Items sind geschützt. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 2 „Vanilla“) und läuft nur bei dir; erlaubt ein Server nur eine niedrigere Stufe, ist sie dort aus.\n\nRückfrage, Knopf und Taste stellst du im [[gc.option|Menü GC Option]] ein; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]]."
+  },
+  "gc.vernichten.trash": {
+    "title": "Vernichten",
+    "short": "Knopf „Vernichten“ am Inventar und eine Taste über einem Item; angelegte und fixierte Items nie.",
+    "body": "Nimm ein Item mit der Maus auf und klicke auf den Knopf „Vernichten“ am Inventar, oder zeige im Inventar oder in einer offenen Kiste auf ein Item und drücke die Taste (Standard Entf, zurzeit {gc_vernichten_trash_key}). Mit dem Knopf verschwindet die aufgenommene Menge, mit der Taste der ganze Stapel.\n\nStandardmäßig kommt vorher eine Rückfrage, denn vernichtete Items sind endgültig weg. Angelegte Items legst du zuerst ab; fixierte Items lassen sich nie vernichten."
+  }
+}

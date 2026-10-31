@@ -1,0 +1,18 @@
+{
+  "$locale": "de",
+  "gc.umkreisernte": {
+    "title": "Umkreis-Ernte (Mod)",
+    "short": "Erntet Pflanzen und alles Aufsammelbare gleicher Sorte im Umkreis auf einmal.",
+    "body": "Die Mod bringt die [[gc.umkreisernte.massharvest]]: E halten sammelt im Umkreis mehr von derselben Sorte ein. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 3 „Vanilla+“) und läuft nur bei dir; erlaubt ein Server nur eine niedrigere Stufe, ist sie dort aus.\n\nRadius, Menge je Schritt und was alles mitkommt, stellst du im [[gc.option|Menü GC Option]] ein; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]]."
+  },
+  "gc.umkreisernte.massharvest": {
+    "title": "Umkreis-Ernte",
+    "short": "E über etwas Aufsammelbarem halten sammelt im Umkreis mehr von derselben Sorte ein.",
+    "body": "Hältst du E über einer Pflanze oder etwas anderem Aufsammelbaren, nimmt jeder Ernteschritt (alle 0,2 s) zusätzlich bis zu {gc_umkreisernte_massharvest_max} gleiche Objekte im Umkreis von {gc_umkreisernte_massharvest_radius} mit. Es zählt immer nur dieselbe Sorte: E auf Gold sammelt nur Gold, E auf Gerste nur Gerste.\n\nFeldfrüchte gehen immer, [[gc.umkreisernte.massharvest_all|alles andere Aufsammelbare]] nur, wenn eingeschaltet. Solange **Nur beim Gedrückthalten** an ist, erntet ein einzelner Druck auf E wie in Vanilla nur ein Objekt."
+  },
+  "gc.umkreisernte.massharvest_all": {
+    "title": "Alles Aufsammelbare",
+    "short": "Nicht nur Feldfrüchte: auch Büsche, wilde Pflanzen, Pilze, Steine, Äste, Schätze und liegende Gegenstände.",
+    "body": "An: Die [[gc.umkreisernte.massharvest|Umkreis-Ernte]] nimmt alles mit, was sich mit E aufsammeln lässt, auch Feuerstein, Beute in Lagern und Gegenstände am Boden, die Valheim bei gehaltenem E sonst nicht aufhebt. Aus: nur Feldfrüchte, also was aus gepflanzten Samen wächst. Gezählt wird immer nur die Sorte, die du anvisierst."
+  }
+}

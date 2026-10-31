@@ -1,0 +1,13 @@
+{
+  "$locale": "en",
+  "gc.vernichten": {
+    "title": "Trash",
+    "short": "Destroys items with a button at the inventory or a key, after a confirmation.",
+    "body": "The mod adds a button to [[gc.vernichten.trash|destroy items]] at the inventory and a key for it; equipped and locked items are protected. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 2 “Vanilla”) and runs only on your side; if a server allows only a lower level, it is off there.\n\nConfirmation, button and key are set in the [[gc.option|GC Option menu]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab."
+  },
+  "gc.vernichten.trash": {
+    "title": "Destroy items",
+    "short": "“Destroy” button at the inventory and a key over an item; never equipped or locked items.",
+    "body": "Pick up an item with the mouse and click the “Destroy” button at the inventory, or point at an item in your inventory or an open chest and press the key (default Delete, currently {gc_vernichten_trash_key}). The button destroys the amount you picked up, the key the whole stack.\n\nBy default a confirmation comes first, because destroyed items are gone for good. Unequip equipped items first; locked items can never be destroyed."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$locale": "en",
+  "gc.kompass": {
+    "title": "Compass (mod)",
+    "short": "Compass bar at the top of the screen with map markers, other players and a golden target.",
+    "body": "The mod adds the [[gc.kompass.compass|compass]] at the top of the screen, with your [[gc.kompass.target|compass target]] and the [[gc.kompass.pings|pings]] of other players. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 1 “Very vanilla”), only changes the display, runs only on your side and therefore works on every server.\n\nSize, field of view, range and what it shows are set in the [[gc.option|GC Option menu]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab.",
+    "see": ["gc.kompass.compass_focus_key", "gc.kompass.compass_offset"]
+  },
+  "gc.kompass.compass": {
+    "title": "Compass",
+    "short": "Bar at the top of the screen with cardinal directions, map markers, other players and your target.",
+    "body": "In the direction you look, the bar shows the cardinal directions and the markers of your map, also traders and other places with a map icon, and other players who are visible on the map. Your [[gc.kompass.target|target]] and [[gc.kompass.pings|pings]] are always highlighted; other markers get smaller and fainter with distance and are hidden beyond {gc_kompass_compass_range}.\n\nWhat is switched off in the map filter is hidden here too, and checked markers only show if you want them. In worlds without a map only the directions remain. The compass disappears with the HUD and while the large map or the large [[gc.dungeonkarte.dungeonmap|dungeon map]] is open."
+  },
+  "gc.kompass.target": {
+    "title": "Compass target",
+    "short": "A map marker that is gold on the map and always highlighted on the compass.",
+    "body": "Hold the [[gc.kompass.compass_focus_key|target key]] (currently {gc_kompass_compass_focus_key}) and click a marker on the large map: it becomes your target, gold on the map and always highlighted on the [[gc.kompass.compass|compass]], even beyond the range. If the target is behind you, it sits at the edge with « or ».\n\nAnother click with the key on the target or on an empty spot removes it; without the key a click checks the marker as usual. The target is saved on the character, separately for each world. Another player as target is found by name and waits while they are offline.",
+    "aliases": ["Compass target"]
+  },
+  "gc.kompass.pings": {
+    "title": "Pings",
+    "short": "Markers that players set with the middle mouse button on the map; blue on the compass.",
+    "body": "When someone clicks the map with the middle mouse button, Valheim shows a ping there for about 5 seconds. For that time the [[gc.kompass.compass|compass]] highlights it in blue, with its name and, if you like, its distance. Like the [[gc.kompass.target|target]], it appears regardless of the range."
+  },
+  "gc.kompass.compass_focus_key": {
+    "title": "Key: choose target",
+    "short": "Hold this key and click a marker on the large map: it becomes your compass target.",
+    "body": "Currently {gc_kompass_compass_focus_key}. With the key held, clicking a marker on the large map makes it your [[gc.kompass.target|target]], and clicking the target or an empty spot removes it. Without a key no target can be chosen."
+  },
+  "gc.kompass.compass_offset": {
+    "title": "Distance from the top",
+    "short": "How far the compass bar sits from the top edge of the screen.",
+    "body": "Currently {gc_kompass_compass_offset}. The boss and raid bars at the top center push the [[gc.kompass.compass|compass]] down on their own instead of covering it; you only need this distance if the bar covers something else."
+  }
+}

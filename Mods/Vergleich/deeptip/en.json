@@ -1,0 +1,25 @@
+{
+  "$locale": "en",
+  "gc.vergleich": {
+    "title": "Equipment comparison (mod)",
+    "short": "Shows next to the tooltip what you are wearing and what changes if you equip the item.",
+    "body": "The mod adds the [[gc.vergleich.compare|equipment comparison]]: when you point at equipment, a box next to it shows what you wear and what changes if you equip it. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 1 “Very vanilla”), only changes the display, runs only on your side and therefore works on every server.\n\nIn the [[gc.option|GC Option menu]] you mainly set [[gc.vergleich.compare_mode|when the comparison appears]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab.",
+    "see": ["gc.vergleich.values"]
+  },
+  "gc.vergleich.compare": {
+    "title": "Equipment comparison",
+    "short": "An “Equipped” box next to the tooltip: what equipping would replace, gains green, losses red.",
+    "body": "When you point at a weapon, shield, clothing, jewelry or ammo in your inventory, in a chest or at a trader, an “Equipped” box appears next to the tooltip with what equipping it would replace. At its top are the [[gc.vergleich.values|differences]], gains green and losses red, and below them, if you like, the full tooltip of the replaced item.\n\nThe whole loadout before and after is compared by Valheim's rules: a two-handed weapon counts against one-handed weapon and shield together, and sheathed weapons count as equipped. If the item replaces nothing, there is no box. [[gc.vergleich.compare_mode|When it appears]] is up to you.",
+    "aliases": ["Equipment comparison"]
+  },
+  "gc.vergleich.values": {
+    "title": "Compared stats",
+    "short": "What the “Equipped” box compares: armor, damage, blocking, modifiers, weight, sets and effects.",
+    "body": "The box lists only values that change when you equip the item:\n- [[valheim.combat.armor|armor]] and resistance to each [[valheim.damage.overview|damage type]]\n- damage per type, the total too when several change; plus [[valheim.stat.stamina|stamina]], [[valheim.stat.eitr|eitr]] and [[valheim.stat.health|health]] costs, [[valheim.combat.knockback|knockback]] and [[valheim.combat.backstab|backstab]]\n- [[valheim.combat.blockpower|block armor]], [[valheim.combat.blockforce|block force]] and [[valheim.combat.parrybonus|parry bonus]]\n- [[valheim.item.movement|movement speed]] and other equipment modifiers such as stamina use, plus eitr regeneration\n- weight and [[valheim.item.durability|durability]]\n- [[valheim.item.seteffect|set effects]] and effects that are gained or lost\n\nEverything is calculated as in the game. With EpicLoot the magic counts too, and EpicLoot's own comparison (left Ctrl) is skipped while the box is shown."
+  },
+  "gc.vergleich.compare_mode": {
+    "title": "When to show",
+    "short": "Whether the equipment comparison always appears, only while a key is held, or is switched on and off with a key.",
+    "body": "- **Always** (default): whenever you point at a suitable item.\n- **Hold:** only while you hold the key, currently {gc_vergleich_compare_key}.\n- **Toggle:** the key switches the [[gc.vergleich.compare|comparison]] on and off, and a message tells you its state.\n\nToggling only works while the inventory or a trader is open, because Shift is also sprinting."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$locale": "de",
+  "gc.vergleich": {
+    "title": "Ausrüstungs-Vergleich (Mod)",
+    "short": "Zeigt neben dem Tooltip, was du gerade trägst und was sich beim Anlegen ändert.",
+    "body": "Die Mod bringt den [[gc.vergleich.compare]]: Zeigst du auf Ausrüstung, steht daneben, was du trägst und was sich beim Anlegen ändert. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 1 „Sehr Vanilla“), ändert nur die Anzeige, läuft nur bei dir und gilt deshalb auf jedem Server.\n\nIm [[gc.option|Menü GC Option]] stellst du vor allem ein, [[gc.vergleich.compare_mode|wann der Vergleich erscheint]]; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]].",
+    "see": ["gc.vergleich.values"]
+  },
+  "gc.vergleich.compare": {
+    "title": "Ausrüstungs-Vergleich",
+    "short": "Feld „Ausgerüstet“ neben dem Tooltip: was beim Anlegen ersetzt würde, Gewinn grün, Verlust rot.",
+    "body": "Zeigst du im Inventar, in einer Kiste oder beim Händler auf eine Waffe, einen Schild, Kleidung, Schmuck oder Munition, erscheint neben dem Tooltip das Feld „Ausgerüstet“ mit dem, was beim Anlegen ersetzt würde. Oben stehen die [[gc.vergleich.values|Unterschiede]], Gewinn grün und Verlust rot, darunter auf Wunsch der vollständige Tooltip des ersetzten Items.\n\nVerglichen wird die ganze Ausrüstung vorher und nachher nach Valheims Regeln: Ein Zweihänder zählt gegen Einhandwaffe und Schild zusammen, weggesteckte Waffen gelten als angelegt. Ersetzt das Item nichts, bleibt das Feld weg. [[gc.vergleich.compare_mode|Wann es erscheint]], stellst du selbst ein.",
+    "aliases": ["Ausrüstungs-Vergleich"]
+  },
+  "gc.vergleich.values": {
+    "title": "Verglichene Werte",
+    "short": "Was das Feld „Ausgerüstet“ vergleicht: Rüstung, Schaden, Blocken, Modifikatoren, Gewicht, Sets und Effekte.",
+    "body": "Das Feld nennt nur Werte, die sich beim Anlegen ändern:\n- [[valheim.combat.armor|Rüstung]] und Schutz gegen jede [[valheim.damage.overview|Schadensart]]\n- Schaden je Art, ändern sich mehrere, auch die Summe; dazu Kosten an [[valheim.stat.stamina|Ausdauer]], [[valheim.stat.eitr|Eitr]] und [[valheim.stat.health|Gesundheit]], [[valheim.combat.knockback|Rückstoß]] und [[valheim.combat.backstab|Hinterhältigkeit]]\n- [[valheim.combat.blockpower|Blockrüstung]], [[valheim.combat.blockforce|Blockmacht]] und [[valheim.combat.parrybonus|Parierbonus]]\n- [[valheim.item.movement|Bewegungstempo]] und andere Modifikatoren der Ausrüstung wie der Ausdauerverbrauch, dazu die Eitr-Regeneration\n- Gewicht und [[valheim.item.durability|Haltbarkeit]]\n- [[valheim.item.seteffect|Set-Boni]] und Effekte, die dazukommen oder wegfallen\n\nGerechnet wird wie im Spiel. Mit EpicLoot zählt die Magie mit, und EpicLoots eigener Vergleich (Links-Strg) entfällt, solange das Feld zu sehen ist."
+  },
+  "gc.vergleich.compare_mode": {
+    "title": "Wann anzeigen",
+    "short": "Ob der Ausrüstungs-Vergleich immer erscheint, nur bei gehaltener Taste oder per Taste an- und abgeschaltet wird.",
+    "body": "- **Immer** (Standard): bei jedem Zeigen auf ein passendes Item.\n- **Halten:** nur, solange du die Taste gedrückt hältst, zurzeit {gc_vergleich_compare_key}.\n- **Umschalten:** Die Taste schaltet den [[gc.vergleich.compare|Vergleich]] an und aus, eine Meldung sagt, wie er steht.\n\nUmgeschaltet wird nur bei offenem Inventar oder Händler, denn Umschalt ist sonst auch Sprinten."
+  }
+}

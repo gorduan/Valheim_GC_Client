@@ -1,0 +1,13 @@
+{
+  "$locale": "en",
+  "gc.kisteleeren": {
+    "title": "Empty chest",
+    "short": "Shift+E at a chest takes everything out without opening it.",
+    "body": "The mod adds [[gc.kisteleeren.quicktake|emptying with Shift+E]]: hold Shift and use a container to empty it without opening its window. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 2 “Vanilla”) and runs only on your side; if a server allows only a lower level, it is off there.\n\nThe key is set in the [[gc.option|GC Option menu]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab."
+  },
+  "gc.kisteleeren.quicktake": {
+    "title": "Empty a chest with Shift+E",
+    "short": "Hold Shift and use a chest, cart or ship: takes everything without opening it.",
+    "body": "Hold the key (currently {gc_kisteleeren_quicktake_key}) and use a container with E: instead of the window, the mod takes out everything that fits into your inventory and reports how many items it took. E alone opens as usual, holding E places stacks like in vanilla, and if you arrive sprinting, the chest opens normally.\n\nThe same rules as for opening apply, such as wards and privacy. Locked items stay in the chest, and with linked chests only the one you look at is emptied."
+  }
+}

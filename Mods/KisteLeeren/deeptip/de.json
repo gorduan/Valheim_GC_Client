@@ -1,0 +1,13 @@
+{
+  "$locale": "de",
+  "gc.kisteleeren": {
+    "title": "Kiste leeren",
+    "short": "Umschalt+E an einer Kiste nimmt alles heraus, ohne sie zu öffnen.",
+    "body": "Die Mod bringt das [[gc.kisteleeren.quicktake|Leeren mit Umschalt+E]]: Umschalt halten und einen Behälter benutzen leert ihn, ohne das Fenster zu öffnen. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 2 „Vanilla“) und läuft nur bei dir; erlaubt ein Server nur eine niedrigere Stufe, ist sie dort aus.\n\nDie Taste stellst du im [[gc.option|Menü GC Option]] ein; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]]."
+  },
+  "gc.kisteleeren.quicktake": {
+    "title": "Kiste leeren mit Umschalt+E",
+    "short": "Umschalt halten und eine Kiste, einen Karren oder ein Schiff benutzen: nimmt alles, ohne zu öffnen.",
+    "body": "Halte die Taste (zurzeit {gc_kisteleeren_quicktake_key}) und benutze einen Behälter mit E: Statt des Fensters nimmt die Mod alles heraus, was in dein Inventar passt, und meldet, wie viele Items es waren. E allein öffnet wie gewohnt, E halten legt wie in Vanilla Stapel ab, und wer sprintend ankommt, öffnet normal.\n\nEs gelten dieselben Regeln wie beim Öffnen, etwa Ward und Privatsphäre. Fixierte Items bleiben in der Kiste, und bei verbundenen Kisten wird nur die angeschaute geleert."
+  }
+}

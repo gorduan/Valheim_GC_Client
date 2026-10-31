@@ -1,0 +1,30 @@
+{
+  "$locale": "de",
+  "gc.portalschutz": {
+    "title": "Portalschutz",
+    "short": "Fragt nach, bevor ein Portal umbenannt wird, und merkt sich den vorherigen Namen.",
+    "body": "Die Mod bringt den [[gc.portalschutz.portalguard]]: eine Rückfrage vor dem Umbenennen, keine getrennten Verbindungen durch unveränderte Namen und einen [[gc.portalschutz.previous|vorherigen Namen]] zum Wiederherstellen. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 1 „Sehr Vanilla“), läuft nur bei dir und gilt auf jedem Server.\n\nEinstellen im [[gc.option|Menü GC Option]]; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]].",
+    "see": ["gc.portalschutz.portalguard_confirm", "gc.portalschutz.portalguard_key"]
+  },
+  "gc.portalschutz.portalguard": {
+    "title": "Portalnamen-Schutz",
+    "short": "Rückfrage vor jeder Umbenennung eines Portals; unveränderte Bestätigungen trennen keine Verbindung mehr.",
+    "body": "In Valheim trennt schon ein bestätigter Umbenennen-Dialog mit unverändertem Namen die Verbindung, und ein versehentliches E und Enter überschreibt den Namen. Mit dem Schutz bleibt eine unveränderte Bestätigung folgenlos, und vor jeder echten Umbenennung eines benannten Portals erscheint eine [[gc.portalschutz.portalguard_confirm|Rückfrage]]. Leere Namen bleiben wie in Vanilla erlaubt, denn auch Portale ohne Namen verbinden sich.\n\nDas Portal merkt sich seinen [[gc.portalschutz.previous|vorherigen Namen]]; mit der [[gc.portalschutz.portalguard_key|Taste]] holst du ihn zurück."
+  },
+  "gc.portalschutz.previous": {
+    "title": "Vorheriger Name",
+    "short": "Der Name, den ein Portal vor der letzten Umbenennung trug; er lässt sich wiederherstellen.",
+    "body": "Bei jeder Umbenennung merkt sich das Portal seinen alten Namen, und sein Hover-Text zeigt ihn an. Hältst du die [[gc.portalschutz.portalguard_key|Taste]] (zurzeit {gc_portalschutz_portalguard_key}) und benutzt das Portal, erscheint eine Rückfrage, ob es wieder so heißen soll.\n\nMit Guilds_Vehicle öffnet Umschalt+E am Portal dessen Gilden-Menü; den alten Namen holst du dann über die Namensliste beim Umbenennen zurück.",
+    "aliases": ["Vorheriger Name"]
+  },
+  "gc.portalschutz.portalguard_confirm": {
+    "title": "Vor dem Umbenennen nachfragen",
+    "short": "Rückfrage „von X in Y umbenennen?“, bevor ein benanntes Portal einen neuen Namen bekommt.",
+    "body": "Die Rückfrage warnt, dass Portale mit dem alten Namen ihre Verbindung verlieren. Sie erscheint nur bei Portalen, die schon einen Namen haben; ein Klick in der Liste der Mod Portalnamen fragt nicht nach. Aus: Umbenennen ohne Rückfrage, unveränderte Bestätigungen bleiben trotzdem folgenlos."
+  },
+  "gc.portalschutz.portalguard_key": {
+    "title": "Taste: alten Namen wiederherstellen",
+    "short": "Diese Taste halten und das Portal benutzen: Rückfrage, ob es wieder seinen vorherigen Namen tragen soll.",
+    "body": "Zurzeit {gc_portalschutz_portalguard_key} (Standard Umschalt, also Umschalt+E). E allein öffnet weiter den Umbenennen-Dialog. Hat das Portal keinen [[gc.portalschutz.previous|vorherigen Namen]], sagt das eine Meldung; in einem fremden Ward gilt wie gewohnt dessen Sperre."
+  }
+}

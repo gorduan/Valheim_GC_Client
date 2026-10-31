@@ -13,8 +13,9 @@ namespace GC.Client.MassHarvest;
 /// GC_MassHarvest: E gedrückt halten sammelt alles Aufsammelbare um den Cursor ein.
 ///
 /// Vanilla kann schon „E halten und mit dem Cursor drüberfahren": Player.Update ruft bei gehaltener Taste
-/// alle 0,2 s Interact(hold: true) auf, und Pickable.Interact ignoriert das hold-Flag. Diese Mod erweitert das:
-/// jede dieser Aktionen sammelt zusätzlich alles im Umkreis des Ziels ein.
+/// jedes Bild Interact(hold: true) auf, Player.Interact wirkt aber höchstens alle 0,2 s (m_lastHoverInteractTime), und
+/// Pickable.Interact ignoriert das hold-Flag. Diese Mod erweitert das: jede dieser Aktionen sammelt zusätzlich alles im
+/// Umkreis des Ziels ein.
 /// Ursprünglich nur Feldfrüchte (Pickables, die eine Pflanze hervorbringt: Plant.m_grownPrefabs). Gorduan (18.10.2026): „für
 /// alles, was man im Spiel aufsammeln kann“, also auch Büsche, wilde Pflanzen, Pilze, Steine, Feuerstein, Äste, Schätze
 /// (alle Pickables), Lager-Beute (PickableItem) und liegende Gegenstände (ItemDrop; Valheim selbst nimmt die bei
@@ -80,7 +81,15 @@ internal static class ZNetSceneAwakePatch
 internal static class InteractPatch
 {
 	private static readonly Collider[] Hits = new Collider[128];
-	private static readonly HashSet<Component> Done = new();
+
+	/// <summary>
+	/// Angefragte Objekte (Instanz-ID) mit Zeitpunkt. Gehört ein Objekt einem anderen Spieler, kommt das Gepflückt-Sein erst mit
+	/// dessen Antwort zurück; bis dahin (höchstens RequestMemory) nicht erneut anfragen (Review 27.10.2026).
+	/// </summary>
+	private static readonly Dictionary<int, float> Requested = new();
+	private static readonly List<int> Expired = new();
+	private const float RequestMemory = 1f;
+	private static int lastFrame = -1;
 
 	private static void Postfix(Player __instance, GameObject go, bool hold)
 	{
@@ -88,15 +97,23 @@ internal static class InteractPatch
 		{
 			return;
 		}
+		// Review 27.10.2026: nur, wenn Valheim eben selbst interagiert hat. Bei gehaltenem E kommt Interact jedes Bild, Valheim bricht
+		// innerhalb von 0,2 s aber ab (m_lastHoverInteractTime), der Postfix lief trotzdem: bis zu MaxPerTick Anfragen je Bild.
+		if (__instance.m_lastHoverInteractTime != Time.time || lastFrame == Time.frameCount)
+		{
+			return;
+		}
+		lastFrame = Time.frameCount;
 		Component? target = Collectible(go, out string kind);
 		if (target == null)
 		{
 			return;
 		}
-		Done.Clear();
-		Done.Add(target); // das Ziel selbst nimmt Valheim
+		Forget();
+		Requested[target.GetInstanceID()] = Time.time; // das Ziel selbst nimmt Valheim
 		int harvested = 0;
-		int count = Physics.OverlapSphereNonAlloc(target.transform.position, Plugin.Radius.Value, Hits, ~0, QueryTriggerInteraction.Collide);
+		// dieselben Ebenen wie Valheims Zeigen auf Objekte (Player.m_interactMask), ohne Auslöser-Bereiche (SDK: Overlap-Abfragen)
+		int count = Physics.OverlapSphereNonAlloc(target.transform.position, Plugin.Radius.Value, Hits, __instance.m_interactMask, QueryTriggerInteraction.Ignore);
 		for (int i = 0; i < count && harvested < Plugin.MaxPerTick.Value; i++)
 		{
 			if (Hits[i] == null)
@@ -104,13 +121,31 @@ internal static class InteractPatch
 				continue;
 			}
 			Component? other = Collectible(Hits[i].gameObject, out string otherKind);
-			if (other == null || !Done.Add(other) || otherKind != kind || !Ready(other))
+			if (other == null || otherKind != kind || Requested.ContainsKey(other.GetInstanceID()) || !Ready(other))
 			{
 				continue;
 			}
+			Requested[other.GetInstanceID()] = Time.time;
 			Collect(__instance, other);
 			harvested++;
 		}
+	}
+
+	/// <summary>Anfragen, die älter als RequestMemory sind, vergessen: Kam keine Antwort, darf neu gefragt werden.</summary>
+	private static void Forget()
+	{
+		foreach (KeyValuePair<int, float> entry in Requested)
+		{
+			if (Time.time - entry.Value >= RequestMemory)
+			{
+				Expired.Add(entry.Key);
+			}
+		}
+		foreach (int id in Expired)
+		{
+			Requested.Remove(id);
+		}
+		Expired.Clear();
 	}
 
 	/// <summary>

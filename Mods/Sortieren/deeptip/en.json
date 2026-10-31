@@ -1,0 +1,19 @@
+{
+  "$locale": "en",
+  "gc.sortieren": {
+    "title": "Sorting",
+    "short": "Sorts your inventory and open chests with a button or a key.",
+    "body": "The mod adds [[gc.sortieren.sort|sort]] buttons to the inventory and chests; locked items and the hotbar stay where they are. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 2 “Vanilla”) and runs only on your side; if a server allows only a lower level, it is off there.\n\nOrder, hotbar, stacks and keys are set in the [[gc.option|GC Option menu]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab.",
+    "see": ["gc.sortieren.sort_mode"]
+  },
+  "gc.sortieren.sort": {
+    "title": "Sort",
+    "short": "“Sort” buttons for inventory and chests; hotbar and locked items stay in place.",
+    "body": "Your inventory and every open chest get a “Sort” button, and if you like a key for each as well. The [[gc.sortieren.sort_mode|order]] can be chosen; if enabled, partial stacks of equal items are merged into full stacks.\n\nLocked items keep their slot, and in the inventory the hotbar (top row) too if you like. Items with extra data such as EpicLoot magic are never merged. If the result does not add up exactly, everything stays as it was."
+  },
+  "gc.sortieren.sort_mode": {
+    "title": "Sort by",
+    "short": "Order when sorting: category, name, weight or value.",
+    "body": "- **Category** (default): weapons, shields, tools and torches, then armor, jewelry, ammo, consumables, fish, materials, trophies and everything else; within a category by name and quality.\n- **Name:** alphabetical in your language, higher quality first.\n- **Weight:** heaviest stacks first (weight times amount).\n- **Value:** most valuable stacks first (value times amount).\n\nStacks of equal weight or value are ordered by name."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$locale": "en",
+  "gc.traglimit": {
+    "title": "Carry limit (mod)",
+    "short": "Takes only as much as you can still carry when picking up and with Ctrl+click in chests.",
+    "body": "The mod adds the [[gc.traglimit.carrylimit|carry limit]]: you take only as much of a stack as you can still carry, and the rest stays where it is. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 2 “Vanilla”) and runs only on your side; if a server allows only a lower level, it is off there.\n\n[[gc.traglimit.carrylimit_mode|When it applies]] is set in the [[gc.option|GC Option menu]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab."
+  },
+  "gc.traglimit.carrylimit": {
+    "title": "Carry limit",
+    "short": "Takes only as much of a stack as you can still carry; the rest stays where it is.",
+    "body": "Vanilla always picks up the whole stack with E, even if you are [[valheim.status.encumbered|encumbered]] afterwards. With the carry limit only the part that still fits under your [[valheim.stat.carryweight|carry weight]] goes into your inventory; a message names the rest left behind.\n\nOn the ground it applies depending on the [[gc.traglimit.carrylimit_mode|mode]], by default with Shift+E. In chests Ctrl+left click takes, if enabled, only as much as you can carry and leaves the rest in the chest. In the modes Toggle and Always, auto pickup can also take partial stacks instead of leaving stacks that are too heavy.",
+    "aliases": ["Carry limit"]
+  },
+  "gc.traglimit.carrylimit_mode": {
+    "title": "When active",
+    "short": "Hold, Toggle or Always: when the carry limit applies to picking up.",
+    "body": "- **Hold** (default): only while the key is held, currently {gc_traglimit_carrylimit_key}; with Shift that means Shift+E.\n- **Toggle:** the key switches the [[gc.traglimit.carrylimit|carry limit]] on and off, but only while the inventory is open, because Shift is also sprinting.\n- **Always:** every pickup respects the carry limit.\n\nCtrl+left click in chests works in every mode. Partial stacks from auto pickup only happen in the modes Toggle and Always, otherwise every run with Shift would pick up partial stacks."
+  }
+}

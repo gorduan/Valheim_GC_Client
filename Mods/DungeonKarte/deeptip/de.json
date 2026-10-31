@@ -1,0 +1,14 @@
+{
+  "$locale": "de",
+  "gc.dungeonkarte": {
+    "title": "Dungeon-Karte (Mod)",
+    "short": "Karte für Dungeons, klein in der Ecke und groß mit der Kartentaste.",
+    "body": "Die Mod bringt die [[gc.dungeonkarte.dungeonmap]], die in Dungeons jeden betretenen Raum zeichnet; solange ihre große Karte offen ist, blendet sich der [[gc.kompass.compass|Kompass]] aus. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 3 „Vanilla+“) und läuft nur bei dir; erlaubt ein Server nur eine niedrigere Stufe, ist sie dort aus.\n\nGröße und Maßstab der kleinen Karte stellst du im [[gc.option|Menü GC Option]] ein; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]]."
+  },
+  "gc.dungeonkarte.dungeonmap": {
+    "title": "Dungeon-Karte",
+    "short": "In Dungeons zeichnet eine Karte jeden betretenen Raum; die Kartentaste zeigt sie groß.",
+    "body": "In Grabkammern, Krypten, Höhlen und Minen gilt jeder Raum als erkundet, sobald du ihn betrittst, und erscheint samt seinen Durchgängen auf der Karte; andere Stockwerke sind blass. Klein steht sie oben rechts, {gc_dungeonkarte_dungeonmap_size} groß mit {gc_dungeonkarte_dungeonmap_zoom} Pixeln pro Meter; die Kartentaste (M) zeigt sie groß, Esc schließt sie.\n\nDie erkundeten Räume bleiben am Charakter gespeichert, je Welt und Dungeon. Auf Wunsch blendet die Mod im Dungeon die normale Minimap aus, die dort nur die Oberwelt zeigen würde. In Welten ohne Karte gibt es auch keine Dungeon-Karte.",
+    "aliases": ["Dungeon-Karte"]
+  }
+}

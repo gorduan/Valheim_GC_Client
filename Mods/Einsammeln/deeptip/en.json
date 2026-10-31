@@ -1,0 +1,14 @@
+{
+  "$locale": "en",
+  "gc.einsammeln": {
+    "title": "Collect into vehicle (mod)",
+    "short": "Puts what you pick up straight into the cart you pull or your ship.",
+    "body": "The mod adds [[gc.einsammeln.cartcollect|collecting into vehicles]]: what you pick up goes into a nearby cart or ship that already carries the same material. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 3 “Vanilla+”) and runs only on your side; if a server allows only a lower level, it is off there.\n\nSearch radius, ships, carts only while pulling and a key to pause are set in the [[gc.option|GC Option menu]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab."
+  },
+  "gc.einsammeln.cartcollect": {
+    "title": "Collect into vehicles",
+    "short": "Picked up material goes into a nearby cart or ship that already holds the same material.",
+    "body": "When you pick something up, with E or automatically, the mod looks within {gc_einsammeln_cartcollect_range} for the nearest vehicle with free space that, by default, already holds the same material: wood to wood, stone to stone. A message names the amount and the vehicle.\n\nOnly vehicles your game is currently handling count, such as the cart you pull or the ship you steer. Open containers, containers locked for automation and other players' vehicles under Guilds_Vehicle are left out. Equipment, quest items and items with extra data always go into your inventory.",
+    "aliases": ["Vehicle collecting"]
+  }
+}

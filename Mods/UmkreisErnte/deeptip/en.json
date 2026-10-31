@@ -1,0 +1,18 @@
+{
+  "$locale": "en",
+  "gc.umkreisernte": {
+    "title": "Area harvest (mod)",
+    "short": "Harvests plants and everything collectible of the same kind around you at once.",
+    "body": "The mod adds the [[gc.umkreisernte.massharvest|area harvest]]: holding E gathers more of the same kind around you. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 3 “Vanilla+”) and runs only on your side; if a server allows only a lower level, it is off there.\n\nRadius, amount per step and what is included are set in the [[gc.option|GC Option menu]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab."
+  },
+  "gc.umkreisernte.massharvest": {
+    "title": "Area harvest",
+    "short": "Holding E over something collectible gathers more of the same kind around it.",
+    "body": "If you hold E over a plant or anything else collectible, every harvest step (every 0.2 s) also takes up to {gc_umkreisernte_massharvest_max} equal objects within {gc_umkreisernte_massharvest_radius}. Only the same kind counts: E on gold gathers only gold, E on barley only barley.\n\nCrops always work, [[gc.umkreisernte.massharvest_all|everything else collectible]] only if enabled. While **Only while holding** is on, a single press of E harvests just one object like in vanilla."
+  },
+  "gc.umkreisernte.massharvest_all": {
+    "title": "Everything collectible",
+    "short": "Not only crops: also bushes, wild plants, mushrooms, stones, branches, treasures and items on the ground.",
+    "body": "On: the [[gc.umkreisernte.massharvest|area harvest]] takes everything you can collect with E, including flint, camp loot and items on the ground, which Valheim otherwise does not pick up while E is held. Off: only crops, meaning what grows from planted seeds. Only the kind you target counts."
+  }
+}

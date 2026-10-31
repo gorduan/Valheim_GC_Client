@@ -36,6 +36,7 @@ internal static class Plugin
 	internal static ConfigEntry<KeyboardShortcut> ToggleKey = null!;
 	internal static bool paused;
 	internal static MethodInfo? canUseCargo;
+	private static bool cargoCheckFailed;
 
 	internal static void Init(ConfigFile Config, Harmony harmony)
 	{
@@ -66,6 +67,10 @@ internal static class Plugin
 
 	internal static Container? FindTarget(Player player, ItemDrop.ItemData item)
 	{
+		if (cargoCheckFailed)
+		{
+			return null; // Guilds_Vehicle ließ sich nicht fragen: kein fremdes Fahrzeug riskieren
+		}
 		int mask = LayerMask.GetMask("vehicle", "piece", "item");
 		int count = Physics.OverlapSphereNonAlloc(player.transform.position, Range.Value, Hits, mask);
 		Container? best = null;
@@ -93,10 +98,13 @@ internal static class Plugin
 				continue;
 			}
 			ZNetView? vehicle = cart != null ? cart.GetComponent<ZNetView>() : ship!.GetComponent<ZNetView>();
-			if (canUseCargo != null && vehicle != null && !(bool)canUseCargo.Invoke(null, new object[] { vehicle, player }))
+			if (!CargoAllowed(vehicle, player))
 			{
 				continue;
 			}
+			// Review 27.10.2026: aktuelle Daten aus dem ZDO wie in KisteLeeren (QuickTake). Container lädt sonst nur jede Sekunde
+			// (CheckForChanges); das Speichern als Besitzer überschriebe neuere Ladung mit der veralteten Kopie.
+			container.Load();
 			Inventory inventory = container.GetInventory();
 			if (inventory == null || !inventory.CanAddItem(item))
 			{
@@ -114,6 +122,30 @@ internal static class Plugin
 			}
 		}
 		return best;
+	}
+
+	/// <summary>
+	/// Darf der Spieler laut Guilds_Vehicle in dieses Fahrzeug laden? Wirft die Prüfung (andere Fassung von Guilds_Vehicle), wird das
+	/// einmal geloggt und das Einsammeln ins Fahrzeug bleibt bis zum Neustart aus, statt fremde Fahrzeuge zu befüllen oder bei jedem
+	/// Aufheben erneut zu werfen (Review 27.10.2026).
+	/// </summary>
+	private static bool CargoAllowed(ZNetView? vehicle, Player player)
+	{
+		if (canUseCargo == null || vehicle == null)
+		{
+			return true;
+		}
+		try
+		{
+			return canUseCargo.Invoke(null, new object[] { vehicle, player }) is true;
+		}
+		catch (Exception e)
+		{
+			canUseCargo = null;
+			cargoCheckFailed = true;
+			Log.LogWarning($"Einsammeln: Die Prüfung von Guilds_Vehicle (VehicleAPI.CanUseCargo) schlug fehl, Einsammeln ins Fahrzeug bleibt bis zum Neustart aus ({e.GetBaseException().Message}).");
+			return false;
+		}
 	}
 }
 
@@ -139,6 +171,10 @@ internal static class PickupPatch
 		{
 			return true; // Ausrüstung, Questitems und Items mit Zusatzdaten immer ins eigene Inventar
 		}
+		if (drop.m_nview == null || !drop.m_nview.IsValid() || !drop.m_nview.IsOwner())
+		{
+			return true; // den Bodenstapel kann nur sein Besitzer kürzen oder entfernen
+		}
 		Container? target = Plugin.FindTarget(player, item);
 		if (target == null)
 		{
@@ -146,13 +182,27 @@ internal static class PickupPatch
 		}
 		int stack = item.m_stack;
 		string name = item.m_shared.m_name;
-		if (!target.GetInventory().AddItem(item.Clone()))
+		// Review 27.10.2026: vorher/nachher zählen wie Traglimit (TakePartial). Passt nur ein Teil, meldet AddItem false, behält den Teil
+		// aber; früher hob danach Vanilla den ganzen Stapel auf (Duplikat). Jetzt wird genau das Angekommene abgezogen, der Rest bleibt liegen.
+		Inventory cargo = target.GetInventory();
+		int before = cargo.NrOfItemsIncludingStacks();
+		cargo.AddItem(item.Clone());
+		int added = cargo.NrOfItemsIncludingStacks() - before;
+		if (added <= 0)
 		{
 			return true;
 		}
-		ZNetScene.instance.Destroy(go);
+		if (added >= stack)
+		{
+			ZNetScene.instance.Destroy(go);
+		}
+		else
+		{
+			item.m_stack = stack - added; // nicht SetStack, das kappt bei m_maxStackSize
+			drop.Save();
+		}
 		player.m_pickupEffects.Create(player.transform.position, Quaternion.identity, null, 1f, -1, player.GetZDOID());
-		Gc.TopLeft(GcLoc.Get("gcc_stored", stack, Localization.instance.Localize(name), Localization.instance.Localize(target.m_name)));
+		Gc.TopLeft(GcLoc.Get("gcc_stored", added, Localization.instance.Localize(name), Localization.instance.Localize(target.m_name)));
 		__result = true;
 		return false;
 	}

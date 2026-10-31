@@ -1,0 +1,14 @@
+{
+  "$locale": "de",
+  "gc.einsammeln": {
+    "title": "Einsammeln ins Fahrzeug (Mod)",
+    "short": "Sammelt Aufgehobenes direkt in den gezogenen Karren oder dein Schiff.",
+    "body": "Die Mod bringt das [[gc.einsammeln.cartcollect]]: Was du aufhebst, landet in einem nahen Karren oder Schiff, das dasselbe Material schon geladen hat. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 3 „Vanilla+“) und läuft nur bei dir; erlaubt ein Server nur eine niedrigere Stufe, ist sie dort aus.\n\nSuchradius, Schiffe, Karren nur beim Ziehen und eine Taste zum Pausieren stellst du im [[gc.option|Menü GC Option]] ein; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]]."
+  },
+  "gc.einsammeln.cartcollect": {
+    "title": "Einsammeln ins Fahrzeug",
+    "short": "Aufgehobenes Material wandert in einen nahen Karren oder ein Schiff, in dem dasselbe Material liegt.",
+    "body": "Hebst du etwas auf, mit E oder automatisch, sucht die Mod im Umkreis von {gc_einsammeln_cartcollect_range} das nächste Fahrzeug mit freiem Platz, das standardmäßig dasselbe Material schon enthält: Holz zu Holz, Stein zu Stein. Eine Meldung nennt Menge und Fahrzeug.\n\nInfrage kommen nur Fahrzeuge, die dein Spiel gerade verwaltet, etwa der Karren, den du ziehst, oder das Schiff, das du steuerst. Offene und für Automatik gesperrte Behälter bleiben außen vor, ebenso fremde Fahrzeuge unter Guilds_Vehicle. Ausrüstung, Quest-Items und Items mit Zusatzdaten kommen immer ins Inventar.",
+    "aliases": ["Einsammeln ins Fahrzeug"]
+  }
+}

@@ -159,6 +159,12 @@ internal static class Sorter
 
 		List<(ItemDrop.ItemData Item, int Stack)> plan = Plugin.MergeStacks.Value ? Merge(movable) : movable.Select(item => (item, item.m_stack)).ToList();
 		plan = Order(plan).ToList();
+		if (!SameAmounts(movable, plan))
+		{
+			// Review 27.10.2026: vor dem Schreiben prüfen, sonst ginge beim Zusammenführen still etwas verloren
+			Plugin.Log.LogWarning("Sortieren abgebrochen: Der Plan enthält nicht genau die Mengen des Inventars. Inventar bleibt unverändert.");
+			return;
+		}
 
 		HashSet<(int, int)> occupied = new(fixedItems.Select(item => (item.m_gridPos.x, item.m_gridPos.y)));
 		List<Vector2i> free = new();
@@ -189,33 +195,59 @@ internal static class Sorter
 		inventory.Changed();
 	}
 
-	/// <summary>Berechnet zusammengelegte Stapel, ohne die Items zu verändern.</summary>
+	/// <summary>
+	/// Berechnet zusammengelegte Stapel, ohne die Items zu verändern. Jedes Item wird höchstens bis zu seiner eigenen Stapelgröße
+	/// gefüllt, größte zuerst (Review 27.10.2026: vorher nach der Stapelgröße des ersten Items; war die Summe größer als Anzahl ×
+	/// Stapelgröße, etwa bei übergroßen Stapeln nach geänderter Stapelgröße, verschwand der Rest still). Passt die Summe nicht in die
+	/// Stapel der Gruppe, bleibt die Gruppe, wie sie ist.
+	/// </summary>
 	private static List<(ItemDrop.ItemData Item, int Stack)> Merge(List<ItemDrop.ItemData> items)
 	{
 		List<(ItemDrop.ItemData, int)> result = new();
 		foreach (IGrouping<string, ItemDrop.ItemData> group in items.GroupBy(StackKey))
 		{
 			List<ItemDrop.ItemData> list = group.ToList();
-			ItemDrop.ItemData first = list[0];
-			if (list.Count == 1 || first.m_shared.m_maxStackSize <= 1 || list.Any(item => item.m_customData.Count > 0 || item.m_equipped))
+			long total = list.Sum(item => (long)item.m_stack);
+			long room = list.Sum(item => (long)item.m_shared.m_maxStackSize);
+			if (list.Count == 1 || room < total || list.Any(item => item.m_shared.m_maxStackSize <= 1 || item.m_customData.Count > 0 || item.m_equipped))
 			{
 				result.AddRange(list.Select(item => (item, item.m_stack)));
 				continue;
 			}
-			int total = list.Sum(item => item.m_stack);
-			int max = first.m_shared.m_maxStackSize;
-			foreach (ItemDrop.ItemData item in list)
+			foreach (ItemDrop.ItemData item in list.OrderByDescending(item => item.m_shared.m_maxStackSize))
 			{
 				if (total <= 0)
 				{
 					break;
 				}
-				int stack = Math.Min(max, total);
+				int stack = (int)Math.Min(item.m_shared.m_maxStackSize, total);
 				total -= stack;
 				result.Add((item, stack));
 			}
 		}
 		return result;
+	}
+
+	/// <summary>Enthält der Plan je Stapel-Schlüssel genau die Menge von vorher und jedes Item höchstens einmal?</summary>
+	private static bool SameAmounts(List<ItemDrop.ItemData> items, List<(ItemDrop.ItemData Item, int Stack)> plan)
+	{
+		Dictionary<string, long> left = new();
+		foreach (ItemDrop.ItemData item in items)
+		{
+			string key = StackKey(item);
+			left[key] = (left.TryGetValue(key, out long sum) ? sum : 0) + item.m_stack;
+		}
+		HashSet<ItemDrop.ItemData> seen = new();
+		foreach ((ItemDrop.ItemData item, int stack) in plan)
+		{
+			string key = StackKey(item);
+			if (stack < 0 || !seen.Add(item) || !left.ContainsKey(key))
+			{
+				return false;
+			}
+			left[key] -= stack;
+		}
+		return left.Values.All(sum => sum == 0);
 	}
 
 	private static string StackKey(ItemDrop.ItemData item)

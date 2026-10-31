@@ -1,0 +1,30 @@
+{
+  "$locale": "de",
+  "gc.tueren": {
+    "title": "Automatische Türen (Mod)",
+    "short": "Türen öffnen sich vor dir und schließen sich hinter dir; bei Gefahr öffnet sich nichts von selbst.",
+    "body": "Die Mod bringt [[gc.tueren.autodoor]]: Türen öffnen sich, wenn du kommst, und schließen sich hinter dir, außer bei [[gc.tueren.danger|Gefahr]]. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 3 „Vanilla+“) und läuft nur bei dir; erlaubt ein Server nur eine niedrigere Stufe, ist sie dort aus.\n\nAbstände, die Regeln bei Gefahr und eine Taste zum Pausieren stellst du im [[gc.option|Menü GC Option]] ein; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]].",
+    "see": ["gc.tueren.autodoor_enemy", "gc.tueren.autodoor_danger"]
+  },
+  "gc.tueren.autodoor": {
+    "title": "Automatische Türen",
+    "short": "Türen öffnen sich, wenn du näher kommst, und schließen sich hinter dir, außer bei Gefahr.",
+    "body": "Kommst du einer Tür näher als {gc_tueren_autodoor_open}, öffnet sie sich; sind alle Spieler weiter als {gc_tueren_autodoor_close} entfernt, schließt die Mod sie wieder, aber nur Türen, die sie selbst geöffnet hat. Geöffnet wird wie von Hand, alle sehen denselben Zustand.\n\nBei [[gc.tueren.danger|Gefahr]] öffnet sich nichts von selbst. Türen mit Schlüssel wie in Krypten, Türen, die sich nicht schließen lassen, und Türen in fremden Wards bedient sie nie. Vor Teleport, Tod und Abmelden schließt sie ihre offenen Türen.",
+    "aliases": ["Automatische Türen"]
+  },
+  "gc.tueren.danger": {
+    "title": "Gefahr (Türen)",
+    "short": "Ein Gegner ist alarmiert oder ein Raid läuft in deiner Nähe: Dann öffnet sich keine Tür von selbst.",
+    "body": "Gefahr herrscht, solange ein feindliches Wesen im [[gc.tueren.autodoor_enemy|Gegner-Abstand]] alarmiert oder aufgebracht ist, und während eines Raids in deiner Nähe, wenn **Bei Raids aussetzen** an ist. Dann öffnen die [[gc.tueren.autodoor|automatischen Türen]] nichts mehr. Mit [[gc.tueren.autodoor_danger|Bei Gefahr schließen]] gehen außerdem die von der Mod geöffneten Türen zu, sobald niemand im Durchgang steht."
+  },
+  "gc.tueren.autodoor_enemy": {
+    "title": "Gegner-Abstand",
+    "short": "Keine Automatik, solange ein alarmierter Gegner in diesem Umkreis ist.",
+    "body": "Zurzeit {gc_tueren_autodoor_enemy}. Es zählen nur feindliche Wesen, die alarmiert oder aufgebracht sind; zahme Tiere und Tiere, die nur fliehen, wie Rehe und Hasen, zählen nie. 0 schaltet die Prüfung auf Gegner ab, Raids zählen dann trotzdem, wenn **Bei Raids aussetzen** an ist."
+  },
+  "gc.tueren.autodoor_danger": {
+    "title": "Bei Gefahr schließen",
+    "short": "Bei Gefahr schließen sich die von der Mod geöffneten Türen, sobald niemand im Durchgang steht.",
+    "body": "Im Durchgang steht, wer näher als 1,2 m an der Tür ist; für ihn bleibt sie offen. Türen, die du von Hand geöffnet hast, bleiben, wie sie sind. Aus: Bei [[gc.tueren.danger|Gefahr]] öffnet sich zwar nichts mehr, offene Türen schließen aber erst, wenn alle weiter als {gc_tueren_autodoor_close} entfernt sind."
+  }
+}

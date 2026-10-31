@@ -1,0 +1,19 @@
+{
+  "$locale": "de",
+  "gc.traglimit": {
+    "title": "Traglimit (Mod)",
+    "short": "Nimmt beim Aufheben und beim Strg+Klick in Kisten nur so viel, wie du noch tragen kannst.",
+    "body": "Die Mod bringt das [[gc.traglimit.carrylimit]]: Von einem Stapel nimmst du nur so viel, wie du noch tragen kannst, der Rest bleibt liegen. Sie gehört zum Paket **GC Client** ([[gc.kern.stufe|Stufe]] 2 „Vanilla“) und läuft nur bei dir; erlaubt ein Server nur eine niedrigere Stufe, ist sie dort aus.\n\n[[gc.traglimit.carrylimit_mode|Wann es greift]], stellst du im [[gc.option|Menü GC Option]] ein; ganz abschalten lässt sich die Mod im Reiter [[gc.modswitch|Mods]]."
+  },
+  "gc.traglimit.carrylimit": {
+    "title": "Traglimit",
+    "short": "Nimmt von einem Stapel nur so viel, wie du noch tragen kannst; der Rest bleibt liegen.",
+    "body": "Vanilla hebt mit E immer den ganzen Stapel auf, auch wenn du danach [[valheim.status.encumbered|überladen]] bist. Mit dem Traglimit landet nur der Teil im Inventar, der noch unter deine [[valheim.stat.carryweight|Tragkraft]] passt; eine Meldung nennt den Rest, der liegen bleibt.\n\nAm Boden greift es je nach [[gc.traglimit.carrylimit_mode|Modus]], standardmäßig mit Umschalt+E. In Kisten nimmt Strg+Linksklick auf Wunsch nur so viel, wie du tragen kannst, der Rest bleibt in der Kiste. In den Modi Umschalten und Immer nimmt auf Wunsch auch das automatische Aufheben Teilstapel, statt zu schwere Stapel liegen zu lassen.",
+    "aliases": ["Traglimit"]
+  },
+  "gc.traglimit.carrylimit_mode": {
+    "title": "Wann aktiv",
+    "short": "Halten, Umschalten oder Immer: wann das Traglimit beim Aufheben greift.",
+    "body": "- **Halten** (Standard): nur, solange die Taste gedrückt ist, zurzeit {gc_traglimit_carrylimit_key}; mit Umschalt also Umschalt+E.\n- **Umschalten:** Die Taste schaltet das [[gc.traglimit.carrylimit|Traglimit]] an und aus, aber nur bei offenem Inventar, weil Umschalt sonst auch Sprinten ist.\n- **Immer:** Jedes Aufheben achtet auf das Traglimit.\n\nStrg+Linksklick in Kisten gilt in jedem Modus. Teilstapel beim automatischen Aufheben gibt es nur in den Modi Umschalten und Immer, sonst nähme jedes Rennen mit Umschalt Teilstapel auf."
+  }
+}

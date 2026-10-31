@@ -1,0 +1,30 @@
+{
+  "$locale": "en",
+  "gc.portalschutz": {
+    "title": "Portal guard",
+    "short": "Asks before a portal is renamed and remembers its previous name.",
+    "body": "The mod adds the [[gc.portalschutz.portalguard|portal name guard]]: a confirmation before renaming, no connections broken by unchanged names, and a [[gc.portalschutz.previous|previous name]] to restore. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 1 “Very vanilla”), runs only on your side and works on every server.\n\nSet it up in the [[gc.option|GC Option menu]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab.",
+    "see": ["gc.portalschutz.portalguard_confirm", "gc.portalschutz.portalguard_key"]
+  },
+  "gc.portalschutz.portalguard": {
+    "title": "Portal name guard",
+    "short": "Confirmation before every portal rename; confirming an unchanged name no longer breaks a connection.",
+    "body": "In Valheim, merely confirming the rename dialog with an unchanged name breaks the connection, and an accidental E and Enter overwrites the name. With the guard an unchanged confirmation does nothing, and a [[gc.portalschutz.portalguard_confirm|confirmation]] appears before every real rename of a named portal. Empty names stay allowed like in vanilla, since portals without a name connect too.\n\nThe portal remembers its [[gc.portalschutz.previous|previous name]]; the [[gc.portalschutz.portalguard_key|key]] brings it back."
+  },
+  "gc.portalschutz.previous": {
+    "title": "Previous name",
+    "short": "The name a portal had before its last rename; it can be restored.",
+    "body": "With every rename the portal remembers its old name, and its hover text shows it. Hold the [[gc.portalschutz.portalguard_key|key]] (currently {gc_portalschutz_portalguard_key}) and use the portal: a confirmation asks whether it should carry that name again.\n\nWith Guilds_Vehicle, Shift+E at the portal opens its guild menu; then you restore the old name from the name list while renaming.",
+    "aliases": ["Previous name"]
+  },
+  "gc.portalschutz.portalguard_confirm": {
+    "title": "Ask before renaming",
+    "short": "Confirmation “rename from X to Y?” before a named portal gets a new name.",
+    "body": "The confirmation warns that portals with the old name lose their connection. It only appears for portals that already have a name; a click in the list of the Portal names mod does not ask. Off: renaming without confirmation, while unchanged confirmations still do nothing."
+  },
+  "gc.portalschutz.portalguard_key": {
+    "title": "Key: restore the old name",
+    "short": "Hold this key and use the portal: you are asked whether it should carry its previous name again.",
+    "body": "Currently {gc_portalschutz_portalguard_key} (default Shift, so Shift+E). E alone still opens the rename dialog. If the portal has no [[gc.portalschutz.previous|previous name]], a message says so; in someone else's ward its lock applies as usual."
+  }
+}

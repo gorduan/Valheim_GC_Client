@@ -22,7 +22,7 @@ public enum Activation
 /// Gewichtsprüfung) und ist danach überladen. Das automatische Aufheben überspringt zu schwere Stapel ganz
 /// (Player.AutoPickup prüft GetTotalWeight + Stapelgewicht &gt; GetMaxCarryWeight).
 /// Mit dieser Mod wird der Stapel geteilt: der tragbare Teil landet im Inventar, der Rest bleibt liegen.
-///  * Boden: Umschalt+E (Modus Halten, Taste einstellbar), oder immer bzw. per Taste umgeschaltet.
+///  * Boden: Umschalt+E (Modus Halten, Taste einstellbar), oder immer bzw. per Taste umgeschaltet (bei offenem Inventar).
 ///  * Kiste: Strg+Linksklick verschiebt in Vanilla den ganzen Stapel ins Inventar. Mit dieser Mod nur so viel,
 ///    wie du tragen kannst, der Rest bleibt in der Kiste.
 ///  * Automatisches Aufheben nimmt Teilstapel nur in den Modi Umschalten und Immer (im Modus Halten würde sonst
@@ -49,14 +49,16 @@ internal static class Plugin
 		Log = ClientPlugin.Log;
 		Enabled = Gc.Bind(Config, "4 - CarryLimit", "Enabled", true, "Funktion ein- oder ausschalten (auch im Menü GC Option).");
 		Mode = Gc.Bind(Config, "4 - CarryLimit", "Activation", Activation.Hold, "Hold = nur solange die Taste gehalten wird, Toggle = Taste schaltet an/aus, Always = immer aktiv.");
-		Key = Gc.Bind(Config, "4 - CarryLimit", "Key", new KeyboardShortcut(KeyCode.LeftShift), "Taste für Hold bzw. Toggle (Standard Umschalt: Umschalt+E hebt nur den tragbaren Teil auf).");
+		Key = Gc.Bind(Config, "4 - CarryLimit", "Key", new KeyboardShortcut(KeyCode.LeftShift), "Taste für Hold bzw. Toggle (Standard Umschalt: Umschalt+E hebt nur den tragbaren Teil auf). Toggle schaltet nur bei offenem Inventar um.");
 		AutoPickupPartial = Gc.Bind(Config, "4 - CarryLimit", "AutoPickupPartial", true, "In den Modi Toggle und Always: auch das automatische Aufheben nimmt Teilstapel, statt zu schwere Stapel liegen zu lassen.");
 		ChestCtrlClick = Gc.Bind(Config, "4 - CarryLimit", "ChestCtrlClick", true, "Strg+Linksklick in einer Kiste nimmt nur so viel vom Stapel, wie du tragen kannst.");
 	}
 
 	internal static void Update()
 	{
-		if (Mode.Value == Activation.Toggle && On && Player.m_localPlayer != null && Gc.Down(Key))
+		// nur bei offenem Inventar (wie der Ausrüstungs-Vergleich): Die Standardtaste Umschalt ist auch Rennen und schaltete sonst bei
+		// jedem Lossprinten um (Review 27.10.2026)
+		if (Mode.Value == Activation.Toggle && On && Player.m_localPlayer != null && InventoryGui.IsVisible() && Gc.Down(Key))
 		{
 			toggledOn = !toggledOn;
 			Gc.Center(GcLoc.Get(toggledOn ? "gccl_on" : "gccl_off"));
@@ -106,6 +108,10 @@ internal static class Plugin
 	/// </summary>
 	internal static bool TakePartial(Player player, ItemDrop drop, int amount)
 	{
+		if (drop.m_nview == null || !drop.m_nview.IsValid() || !drop.m_nview.IsOwner())
+		{
+			return false; // nur als Besitzer: sonst ließe sich der Bodenstapel nicht kürzen und es entstünde ein Duplikat (Review 27.10.2026)
+		}
 		Inventory inventory = player.GetInventory();
 		amount = Mathf.Min(amount, Room(inventory, drop.m_itemData), drop.m_itemData.m_stack);
 		if (amount <= 0)
@@ -129,7 +135,9 @@ internal static class Plugin
 		}
 		else
 		{
-			drop.SetStack(left);
+			// nicht SetStack: das kappt bei m_maxStackSize, ein übergroßer Bodenstapel verlöre den Rest (Review 27.10.2026)
+			drop.m_itemData.m_stack = left;
+			drop.Save();
 		}
 		player.m_pickupEffects.Create(player.transform.position, Quaternion.identity, null, 1f, -1, player.GetZDOID());
 		player.ShowPickupMessage(clone, added);

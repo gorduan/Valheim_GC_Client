@@ -37,12 +37,26 @@ internal static class Plugin
 	internal static ConfigEntry<string> ExcludedPrefabs = null!;
 	internal static ConfigEntry<KeyboardShortcut> ToggleKey = null!;
 
+	/// <summary>Abstand, ab dem jemand „im Durchgang“ steht: dann wird nicht geschlossen.</summary>
+	private const float PassageDistance = 1.2f;
+
 	internal static readonly HashSet<Door> Doors = new();
 	private static readonly HashSet<Door> openedByUs = new();
+	private static readonly Dictionary<Door, Request> requests = new();
 	private static HashSet<string> excluded = new();
 	private static float nextTick;
+	private static float nextCleanup;
 	private static bool paused;
 	private static bool dangerShown;
+
+	/// <summary>Gesendeter Umschalt-Wunsch (RPC „UseDoor“) an einer Tür, bis die Antwort ihres Besitzers da ist.</summary>
+	private sealed class Request
+	{
+		internal bool Open;     // gewünschter Zustand
+		internal uint Revision; // DataRevision des ZDO beim Senden
+		internal float Until;   // spätestens dann neu entscheiden
+		internal bool Pause;    // nach einem Fehlversuch: zufällige Pause vor dem nächsten
+	}
 
 	internal static void Init(ConfigFile Config, Harmony harmony)
 	{
@@ -61,6 +75,12 @@ internal static class Plugin
 
 	internal static void Update()
 	{
+		if (Time.time >= nextCleanup)
+		{
+			// auch, wenn die Mod aus oder gesperrt ist: DoorAwakePatch trägt weiter ein, Doors wuchs sonst mit jeder geladenen Tür (Review 27.10.2026)
+			nextCleanup = Time.time + 5f;
+			Forget();
+		}
 		Player player = Player.m_localPlayer;
 		if (!On || Gc.IsHeadless || player == null)
 		{
@@ -76,8 +96,11 @@ internal static class Plugin
 			return;
 		}
 		nextTick = Time.time + 0.15f;
-		Doors.RemoveWhere(door => door == null);
-		openedByUs.RemoveWhere(door => door == null);
+		Forget();
+		if (player.IsTeleporting())
+		{
+			return; // beim Teleport nichts öffnen, die eigenen hat TeleportPatch schon geschlossen (Review 27.10.2026)
+		}
 
 		bool danger = InDanger(player);
 		if (danger && !dangerShown)
@@ -98,25 +121,115 @@ internal static class Plugin
 			{
 				continue;
 			}
-			int state = door.m_nview.GetZDO().GetInt(ZDOVars.s_state);
+			ZDO zdo = door.m_nview.GetZDO();
+			if (Waiting(door, zdo))
+			{
+				continue;
+			}
+			int state = zdo.GetInt(ZDOVars.s_state);
+			if (state == 0)
+			{
+				openedByUs.Remove(door); // zu (von uns, von Hand oder ein Öffnen schlug fehl): nicht mehr unsere offene Tür
+			}
 			float distance = Vector3.Distance(position, door.transform.position);
 			if (state == 0 && !danger && distance < OpenDistance.Value && door.CanInteract() && PrivateArea.CheckAccess(door.transform.position, 0f, false))
 			{
 				Vector3 dir = (position - door.transform.position).normalized;
-				door.Open(dir);
+				Send(door, zdo, true, dir);
 				openedByUs.Add(door);
 				continue;
 			}
 			if (state != 0 && openedByUs.Contains(door) && door.CanInteract())
 			{
 				float nearest = players.Count == 0 ? distance : players.Min(p => Vector3.Distance(p.transform.position, door.transform.position));
-				bool clear = danger && CloseWhenDanger.Value ? nearest > 1.2f : nearest > CloseDistance.Value;
+				bool clear = danger && CloseWhenDanger.Value ? nearest > PassageDistance : nearest > CloseDistance.Value;
 				if (clear)
 				{
-					door.Open(Vector3.zero);
-					openedByUs.Remove(door);
+					Send(door, zdo, false, Vector3.zero); // bleibt in openedByUs, bis sie wirklich zu ist (sonst nächster Versuch)
 				}
 			}
+		}
+	}
+
+	/// <summary>Zerstörte Türen vergessen (Zone entladen, abgerissen).</summary>
+	private static void Forget()
+	{
+		Doors.RemoveWhere(door => door == null);
+		openedByUs.RemoveWhere(door => door == null);
+		if (requests.Count > 0)
+		{
+			foreach (Door door in requests.Keys.Where(door => door == null).ToList())
+			{
+				requests.Remove(door);
+			}
+		}
+	}
+
+	/// <summary>Umschalt-Wunsch wie Vanilla (Door.Open: RPC „UseDoor“ an den Besitzer) und merken, bis seine Antwort da ist.</summary>
+	private static void Send(Door door, ZDO zdo, bool open, Vector3 direction)
+	{
+		requests[door] = new Request { Open = open, Revision = zdo.DataRevision, Until = Time.time + 1f };
+		door.Open(direction);
+	}
+
+	/// <summary>
+	/// Wartet die Tür noch auf die Antwort zu unserem letzten Wunsch? „UseDoor“ schaltet beim Besitzer um; ein zweiter Wunsch, bevor
+	/// dessen Antwort da ist, schaltete sie zurück (Review 27.10.2026: Tür flatterte bei fremdem Besitzer oder zwei Spielern mit der
+	/// Mod, weil die eigene ZDO-Kopie noch „zu“ zeigte und alle 0,15 s neu gesendet wurde). Antwort heißt: die DataRevision des ZDO
+	/// ändert sich, höchstens 1 s. Ist die Tür danach nicht wie gewünscht (zwei Spieler schalteten zugleich), folgt eine zufällige
+	/// Pause, damit nicht beide wieder im Gleichtakt senden.
+	/// </summary>
+	private static bool Waiting(Door door, ZDO zdo)
+	{
+		if (!requests.TryGetValue(door, out Request request))
+		{
+			return false;
+		}
+		if (zdo.DataRevision == request.Revision && Time.time < request.Until)
+		{
+			return true;
+		}
+		bool open = zdo.GetInt(ZDOVars.s_state) != 0;
+		if (!request.Pause && open != request.Open)
+		{
+			request.Pause = true;
+			request.Revision = zdo.DataRevision;
+			request.Until = Time.time + Random.Range(0.3f, 1f);
+			return true;
+		}
+		requests.Remove(door);
+		return false;
+	}
+
+	/// <summary>
+	/// Vor Teleport, Tod und Abmelden (Review 27.10.2026): die selbst geöffneten Türen schließen. Danach verschwinden sie lokal (Zone
+	/// entladen), die Mod vergaß sie, und sie blieben offen. Steht ein anderer Spieler im Durchgang, bleibt die Tür für ihn offen.
+	/// Gilt auch bei Pause oder abgeschalteter Mod: Es sind Türen, die sie selbst geöffnet hat.
+	/// </summary>
+	internal static void CloseOwnDoors()
+	{
+		if (openedByUs.Count == 0)
+		{
+			return;
+		}
+		Player? me = Player.m_localPlayer;
+		List<Player> players = Player.GetAllPlayers();
+		foreach (Door door in openedByUs)
+		{
+			if (door == null || door.m_nview == null || !door.m_nview.IsValid())
+			{
+				continue;
+			}
+			ZDO zdo = door.m_nview.GetZDO();
+			if (zdo.GetInt(ZDOVars.s_state) == 0 || (requests.TryGetValue(door, out Request pending) && !pending.Open && zdo.DataRevision == pending.Revision))
+			{
+				continue; // schon zu, oder das Schließen ist schon unterwegs
+			}
+			if (players.Any(p => p != null && p != me && Vector3.Distance(p.transform.position, door.transform.position) <= PassageDistance))
+			{
+				continue;
+			}
+			Send(door, zdo, false, Vector3.zero);
 		}
 	}
 
@@ -155,7 +268,15 @@ internal static class Plugin
 			{
 				continue;
 			}
-			if (BaseAI.IsEnemy(player, character))
+			// Review 27.10.2026: Nur feindliche Wesen (BaseAI.IsEnemy beachtet die Fraktionen, Dverger z. B. erst aufgebracht), die
+			// alarmiert oder aufgebracht sind. Vorher zählte jedes ungezähmte Wesen (Rehe, Hasen, Tiere im Zähmgehege) und die
+			// Automatik blieb dauerhaft aus. Tiere mit AnimalAI fliehen nur und greifen nie an.
+			BaseAI? ai = character.GetBaseAI();
+			if (ai == null || ai is AnimalAI || !BaseAI.IsEnemy(player, character))
+			{
+				continue;
+			}
+			if (ai.IsAlerted() || ai.IsAggravated())
 			{
 				return true;
 			}
@@ -172,6 +293,45 @@ internal static class DoorAwakePatch
 		if (__instance.m_nview != null && __instance.m_nview.GetZDO() != null)
 		{
 			Plugin.Doors.Add(__instance);
+		}
+	}
+}
+
+/// <summary>Teleport (Portal, Bett, Mods): vorher die selbst geöffneten Türen schließen (Review 27.10.2026).</summary>
+[HarmonyPatch(typeof(Player), nameof(Player.TeleportTo))]
+internal static class TeleportPatch
+{
+	private static void Postfix(Player __instance, bool __result)
+	{
+		if (__result && __instance == Player.m_localPlayer)
+		{
+			Plugin.CloseOwnDoors();
+		}
+	}
+}
+
+/// <summary>Tod: vorher die selbst geöffneten Türen schließen, nach dem Erwachen am Bett wären sie vergessen (Review 27.10.2026).</summary>
+[HarmonyPatch(typeof(Player), nameof(Player.OnDeath))]
+internal static class DeathPatch
+{
+	private static void Prefix(Player __instance)
+	{
+		if (__instance == Player.m_localPlayer)
+		{
+			Plugin.CloseOwnDoors();
+		}
+	}
+}
+
+/// <summary>Abmelden und Spiel beenden (Game.Logout und OnApplicationQuit laufen über Game.Shutdown): vorher schließen (Review 27.10.2026).</summary>
+[HarmonyPatch(typeof(Game), nameof(Game.Shutdown))]
+internal static class ShutdownPatch
+{
+	private static void Prefix(Game __instance)
+	{
+		if (!__instance.m_shuttingDown)
+		{
+			Plugin.CloseOwnDoors();
 		}
 	}
 }

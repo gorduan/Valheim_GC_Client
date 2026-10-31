@@ -1,0 +1,30 @@
+{
+  "$locale": "en",
+  "gc.tueren": {
+    "title": "Automatic doors (mod)",
+    "short": "Doors open in front of you and close behind you; in danger nothing opens by itself.",
+    "body": "The mod adds [[gc.tueren.autodoor|automatic doors]]: doors open when you come and close behind you, except in [[gc.tueren.danger|danger]]. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 3 “Vanilla+”) and runs only on your side; if a server allows only a lower level, it is off there.\n\nDistances, the rules in danger and a key to pause are set in the [[gc.option|GC Option menu]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab.",
+    "see": ["gc.tueren.autodoor_enemy", "gc.tueren.autodoor_danger"]
+  },
+  "gc.tueren.autodoor": {
+    "title": "Automatic doors",
+    "short": "Doors open when you come closer and close behind you, except in danger.",
+    "body": "When you get closer to a door than {gc_tueren_autodoor_open}, it opens; once all players are farther away than {gc_tueren_autodoor_close}, the mod closes it again, but only doors it opened itself. Doors are opened as if by hand, so everyone sees the same state.\n\nIn [[gc.tueren.danger|danger]] nothing opens by itself. Doors with a key such as in crypts, doors that cannot be closed and doors in someone else's ward are never used. Before teleporting, dying and logging out, the mod closes its open doors.",
+    "aliases": ["Automatic doors"]
+  },
+  "gc.tueren.danger": {
+    "title": "Danger (doors)",
+    "short": "An enemy is alerted or a raid is running near you: then no door opens by itself.",
+    "body": "There is danger while a hostile creature within the [[gc.tueren.autodoor_enemy|enemy distance]] is alerted or aggravated, and during a raid near you if **Pause during raids** is on. Then the [[gc.tueren.autodoor|automatic doors]] open nothing. With [[gc.tueren.autodoor_danger|Close when in danger]] the doors opened by the mod also close as soon as nobody stands in the doorway."
+  },
+  "gc.tueren.autodoor_enemy": {
+    "title": "Enemy distance",
+    "short": "No automation while an alerted enemy is within this range.",
+    "body": "Currently {gc_tueren_autodoor_enemy}. Only hostile creatures that are alerted or aggravated count; tamed animals and animals that only flee, such as deer and hares, never do. 0 switches the enemy check off; raids still count if **Pause during raids** is on."
+  },
+  "gc.tueren.autodoor_danger": {
+    "title": "Close when in danger",
+    "short": "In danger, doors opened by the mod close as soon as nobody stands in the doorway.",
+    "body": "Whoever is closer than 1.2 m to the door stands in the doorway, and for them it stays open. Doors you opened by hand stay as they are. Off: in [[gc.tueren.danger|danger]] nothing opens any more, but open doors only close once everyone is farther away than {gc_tueren_autodoor_close}."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$locale": "en",
+  "gc.dungeonkarte": {
+    "title": "Dungeon map (mod)",
+    "short": "A map for dungeons, small in the corner and large with the map key.",
+    "body": "The mod adds the [[gc.dungeonkarte.dungeonmap|dungeon map]], which draws every room you enter in dungeons; while its large map is open, the [[gc.kompass.compass|compass]] hides. It belongs to the **GC Client** package ([[gc.kern.stufe|level]] 3 “Vanilla+”) and runs only on your side; if a server allows only a lower level, it is off there.\n\nSize and scale of the small map are set in the [[gc.option|GC Option menu]]; the whole mod can be switched off on the [[gc.modswitch|Mods]] tab."
+  },
+  "gc.dungeonkarte.dungeonmap": {
+    "title": "Dungeon map",
+    "short": "Inside dungeons a map draws every room you enter; the map key shows it large.",
+    "body": "In burial chambers, crypts, caves and mines every room counts as explored as soon as you enter it and appears on the map with its passages; other floors are faint. The small map sits at the top right, {gc_dungeonkarte_dungeonmap_size} in size at {gc_dungeonkarte_dungeonmap_zoom} pixels per meter; the map key (M) shows it large, Esc closes it.\n\nExplored rooms are saved on the character, per world and dungeon. If you like, the mod hides the normal minimap in dungeons, which would only show the world above. In worlds without a map there is no dungeon map either.",
+    "aliases": ["Dungeon map"]
+  }
+}
